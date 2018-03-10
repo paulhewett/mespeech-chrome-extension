@@ -5,7 +5,7 @@
         <name>Basic Vocabulary</name>
         <theme_id>B</theme_id>
         <layout_id>A</layout_id>
-        <description><![CDATA[A basic vocabulary for direct selection]]></description>
+        <description><![CDATA[A basic vocabulary for direct selection.]]></description>
         <type>user</type>
         <created_by>2</created_by>
         <created_date>2012-10-30 11:33:57</created_date>
@@ -16,7 +16,7 @@
         <name>Sentence Builder</name>
         <theme_id>B</theme_id>
         <layout_id>C</layout_id>
-        <description><![CDATA[Use this for sentence building]]></description>
+        <description>Use this for sentence building updATE.</description>
         <type>user</type>
         <created_by>2</created_by>
         <created_date>2012-10-30 11:33:57</created_date>
@@ -27,7 +27,7 @@
         <name>On Screen Keyboard</name>
         <theme_id>B</theme_id>
         <layout_id>B</layout_id>
-        <description><![CDATA[A basic On screen keyboard.]]></description>
+        <description>A basic On screen keyboard.</description>
         <type>user</type>
         <created_by>2</created_by>
         <created_date>2012-11-20 12:26:21</created_date>

@@ -1,4 +1,4 @@
-﻿body {
+body {
     font-family:Trebuchet MS;
     font-size:small;
     background: Black;
@@ -143,4 +143,9 @@ fieldset
 .controlHolder
 {
     padding-bottom:80px;    
+}
+
+#switchWarning {
+ 
+    text-align: center;
 }

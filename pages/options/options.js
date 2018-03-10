@@ -12,114 +12,193 @@ var messageSpeakingTest = "Speaking sample text.";
 var msp_apikey = "asdqwe123";
 var progStage = 0;
 var progStart = 0;
+var onOpenDefault = "options/options.html";  
+var voiceNameDefault = "native";    
+var voiceEnqueueDefault = "true"; 
+var defaultVocab = "B";
+var defaultSwitchType = "direct";
+var defaultSwitchQuantity = 1;
+var defaultSW1 = "A";
+var defaultSW2 = "Z";
+var defaultSW1Code = 65;
+var defaultSW2Code = 90;
+var defaultSwitchRepeats = 3;
+var defaultSwitchIntervals = 0.7;
+var defaultSwitchSpacing = 100;
+var defaultLocationRange = 50;
+var defaultLocationState = "true";
+var defaultSwitchWarning = "Click 'Set this switch' then hit the switch or key you would like to assign to that switch.";
+var manifestText = "";
+
+
+var vocabularyManifest = "";
+var layoutManifest = "";
+var themeManifest = "";
+var imageManifest = "";
+var selectionSetManifest = "";
+var vocabularyManifestUpdated = false;
+var layoutManifestUpdated = false;
+var themeManifestUpdated = false;
+var imageManifestUpdated = false;
+var selectionSetManifestUpdated = false;
+
+
+//var msp_install_date;
+var my_value;
+var msp_install_date;
+var msp_on_open;
+var msp_user_id;
+var msp_auto_update;
+var msp_token;
+var msp_voice_name;
+var msp_voice_enqueue;
+var msp_last_sync;
+
 
 //If install date not set, ie first run, load splash page instead and set the install date
+/* REINSTATE THIS
+
 if (!localStorage["msp_install_date"]){
     document.location.href = "/pages/index/index.html";
 }
 
+*/
+
 document.addEventListener('DOMContentLoaded', function () {
 
-    //CHECK IF FIRST RUN
-    if (localStorage["msp_vocab"] == undefined) {
-        firstRun();
-    }
-
-    //SET SOME CONTROL AND UI ELEMENTS
-
+        
+    //Hide sign in until it's required
+    $("#signin-form").hide();    
+    $("#switchWarning").hide();
+    
     //Set Progress bar
     $(function () {
         $("#progressbar").progressbar({
             value: 0
         });
     });
-    $("#progressbar").hide();
+    $("#progressbar").hide();    
 
-    //Set VOCABULARY OPTIONS
-
-    //Populate User Vocabularies select    
-    populateVocabularies();
-
-    //Set buttons
-    if (localStorage["msp_token"] && localStorage["msp_userid"]) {
-        $("#sign-in").hide();
-        $("#sign-out").show();
-        $("#sync").show();
-    } else {
-        $("#sign-in").show();
-        $("#sign-out").hide();
-        $("#sync").hide();
-    }
     
-    //Set SETTINGS
-    $("#onOpen").val(localStorage["msp_on_open"]);
-    
-    //Set value to true or false based on fileStorage value
-    if (localStorage["msp_auto_update"] == "true") {
-        update = true;
-    } else {
-        update = false;
-    }
-    document.getElementById("checkUpdate").checked = update;
+    //Check for some values in local storage
+    chrome.storage.local.get([
+        'msp_on_open',
+        'msp_user_id',
+        'msp_last_sync',
+        'msp_auto_update',
+        'msp_install_date',
+        'msp_vocab',
+        'msp_token',
+        'msp_voice_name',
+        'msp_voice_enqueue',
+        'msp_voice_pitch',
+        'msp_voice_rate',
+        'msp_voice_volume',
+        'msp_location_enabled',
+        'msp_location_range'], function (values) {
+        
+            msp_on_open = values.msp_on_open; 
+            msp_user_id = values.msp_user_id; 
+            msp_auto_update = values.msp_auto_update; 
+            msp_install_date = values.msp_install_date; 
+            msp_vocab = values.msp_vocab; 
+            msp_token = values.msp_token;
+            msp_voice_name = values.msp_voice_name;
+            msp_last_sync = values.msp_last_sync;
+        
+            //Populate the available voices
+            populateVoices();  
+        
+            //Populate User Vocabularies select    
+            populateVocabularies();
+        
+            //Check if this is the first run
+            if (msp_vocab == undefined) {
+                console.log("Doing first run...");
+                firstRun();
+            } else {
+                console.log("First run not required");
+            }
+                
+            //Set auto update settings
+            if (msp_auto_update == true) {
+                update = true;
+            } else {
+                update = false;
+            }
+            document.getElementById("checkUpdate").checked = update;          
 
-    //Set TEXT TO SPEECH PROPERTIES
-    populateVoices();
-
-    //Set value to true or false based on fileStorage value
-    if (localStorage["msp_voice_enqueue"] == "true") {
-        enqueue = true;
-    } else {
-        enqueue = false;
-    }
-    document.getElementById("enqueue").checked = enqueue;
-
-    //Set SPEECH CHARACTERISTICS
-    document.getElementById("pitch").value = localStorage["msp_voice_pitch"];
-    document.getElementById("pitchValue").innerText = localStorage["msp_voice_pitch"];
-    document.getElementById("rate").value = localStorage["msp_voice_rate"];
-    document.getElementById("rateValue").innerText = localStorage["msp_voice_rate"];
-    document.getElementById("volume").value = localStorage["msp_voice_volume"];
-    document.getElementById("volumeValue").innerText = localStorage["msp_voice_volume"];
-
-    //Set ACCESS SETTINGS
-    setAccessSettings()
-    setAccessControls();
-
-    //Set LOCATION SETTING
-    //Set value to true or false based on location enabled value
-    if (localStorage["msp_location_enabled"] == "true") {
-        locationEnabled = true;
-    } else {
-        locationEnabled = false;
-    }
-    document.getElementById("locationEnabled").checked = locationEnabled;
-    document.getElementById("locationRange").value = localStorage["msp_location_range"];
-    
-    
-    //NEED TO TWEAK THIS
-
-    //Only want to sync if the user has signed in
-    //If signed in an not synchronised
-    if (localStorage["msp_userid"]) {
-
-        //alert("Signed in");
-        if (!localStorage["msp_last_sync"]) {
-            //$("#progressbar").show();
-            //alert("You need to do first time sync");
-            sync();
-
-        } else {
-        //If auto updates allowed...
-            if (localStorage["msp_auto_update"] == "true") {
-            //Check if sync required
-                if (checkIfSyncRequired() == true) {
-                    //Run the sync
-                    sync();
-                }
+            //Display or hide sign in buttons
+            if (msp_token && msp_user_id) {
+                $("#sign-in").hide();
+                $("#sign-out").show();
+                $("#sync").show();
+            } else {
+                $("#sign-in").show();
+                $("#sign-out").hide();
+                $("#sync").hide();
             }
 
+            //Set start page
+            $("#onOpen").val(msp_on_open);        
+
+            //Set speech and voice characteristics
+            if (values.msp_voice_enqueue == "true") {
+                enqueue = true;
+            } else {
+                enqueue = false;
+            }
+            document.getElementById("enqueue").checked = enqueue;
+            document.getElementById("pitch").value = values.msp_voice_pitch;
+            document.getElementById("pitchValue").innerText = values.msp_voice_pitch;
+            document.getElementById("rate").value = values.msp_voice_rate;
+            document.getElementById("rateValue").innerText = values.msp_voice_rate;
+            document.getElementById("volume").value = values.msp_voice_volume;
+            document.getElementById("volumeValue").innerText = values.msp_voice_volume;
+        
+            //Set location related controls
+            if (values.msp_location_enabled == true) {
+                locationEnabled = true;
+            } else {
+                locationEnabled = false;
+            }
+        
+            console.log("Location enabled value is " + locationEnabled);
+            document.getElementById("locationEnabled").checked = locationEnabled;
+            document.getElementById("locationRange").value = values.msp_location_range;
+
+        });
+
+        console.log("DOwn to here");
+    
+        //Set ACCESS SETTINGS
+        setAccessSettings()
+        setAccessControls();
+    
+        //NEED TO TWEAK THIS
+
+        //Only want to sync if the user has signed in
+        //If signed in an not synchronised
+        if (msp_user_id) {
+
+            //alert("Signed in");
+            if (!msp_last_sync) {
+                //$("#progressbar").show();
+                //alert("You need to do first time sync");
+                sync();
+
+            } else {
+            //If auto updates allowed...
+                if (msp_auto_update == "true") {
+                //Check if sync required
+                    if (checkIfSyncRequired() == true) {
+                        //Run the sync
+                        sync();
+                    }
+                }
+
+            }
         }
-    }
     /*
      && 
         
@@ -148,7 +227,12 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('sign-out').addEventListener('click', signOut);
     document.getElementById('sync').addEventListener('click', sync);  
     $("#sign-in").click(function () {
-        document.location.href = "/pages/signin/signin.html";
+        //Not now...
+        //document.location.href = "/pages/signin/signin.html";
+        
+        //..now do this:
+        $("#signin-form").show();
+        $("#holder").hide();
         
     });      
 
@@ -164,15 +248,19 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('switchQuantity').addEventListener('change', setAccessControls);
     document.getElementById('screenSw1').addEventListener('change', flipScreenSwitches);
     document.getElementById('sample').addEventListener('click', testSettings);
+    
+    document.getElementById('authenticate').addEventListener('click', authUser);    
 
     $("#setSw1").click(function () {
         $("#sw").val("1");
-        alert("Click OK and then click Switch 1.");
+        $("#switchWarning").text("Hit the switch or key you would like to assign to this switch.");
+        //alert("Click OK and then click Switch 1.");
     });
 
     $("#setSw2").click(function () {
         $("#sw").val("2");
-        alert("Click OK and then click Switch 2.");
+        $("#switchWarning").text("Hit the switch or key you would like to assign to this switch.");
+        //alert("Click OK and then click Switch 2.");
     });
 
 
@@ -182,18 +270,20 @@ document.addEventListener('DOMContentLoaded', function () {
             //alert("Switch 1 selected")
             $("#sw1").val(String.fromCharCode(e.keyCode));
             $("#sw1Code").val(e.keyCode);
-            //alert("You selected the letter '" + String.fromCharCode(e.keyCode) + "' for Switch 1.");
+
             //Reset the hidden value to prevent contsant popups
             $("#sw").val("");
+            $("#switchWarning").text(defaultSwitchWarning);            
+            
         }
         if ($("#sw").val() == "2") {
             //alert("Switch 2 selected");
             $("#sw2").val(String.fromCharCode(e.keyCode));
             $("#sw2Code").val(e.keyCode);
-            //alert("You selected the letter '" + String.fromCharCode(e.keyCode) + "' for Switch 2.");
+
             //Reset the hidden value to prevent contsant popups
             $("#sw").val("");
-
+            $("#switchWarning").text(defaultSwitchWarning);           
         }
     });
 
@@ -209,113 +299,205 @@ function firstRun() {
     //Add some internationalisation settings here too to detect user's language
     //to do when internationalisation added.
 
-    //alert("Doing first run");
+    console.log("Doing first run...");
 
-    //localStorage["msp_vocab"] = "A"; 
-
-    //localStorage["msp_on_open"] = "options/options.html";
-
-    //localStorage["msp_voice_name"] = "native";
-    //localStorage["msp_voice_rate"] = rateDefault;
-    //localStorage["msp_voice_volume"] = volumeDefault;
-    //localStorage["msp_voice_pitch"] = pitchDefault;
-    //localStorage["msp_voice_lang"] = "en";
-    //localStorage["msp_voice_enqueue"] = "true";
+    //Load up the default vocabularies
     
     
+    //Try a slightly different version
+    setXML("/xml/default/vocabularies.xml");
+    //defaultVocabA = new XMLSerializer().serializeToString(xmlDoc);
     
-    //localStorage["msp_location_range"] = 50;
-    //localStorage["msp_location_enabled"] = "true";
-
-
-
-
-    //Save values to local storage
-    localStorage["msp_on_open"] = "options/options.html";
-    localStorage["msp_voice_name"] = "native";
-    localStorage["msp_voice_rate"] = rateDefault;
-    localStorage["msp_voice_pitch"] = pitchDefault;
-    localStorage["msp_voice_volume"] = volumeDefault;
-    localStorage["msp_voice_enqueue"] = "true";
-    
-    localStorage["msp_vocab"] = "B";
-    
-    //Switch access settings
-    localStorage["msp_switch_type"] = "direct";
-    localStorage["msp_switch_quantity"] = 1;;
-    localStorage["msp_switch_sw1"] = "A";
-    localStorage["msp_switch_sw2"] = "Z"
-    localStorage["msp_switch_sw1Code"] = 65;
-    localStorage["msp_switch_sw2Code"] = 90;
-    localStorage["msp_switch_repeats"] = 3;
-    localStorage["msp_switch_interval"] = 0.7;
-    localStorage["msp_switch_spacing"] = 100;
-
-    //Need to do a check to make sure the value is valid
-    localStorage["msp_location_range"] = 50;
-    localStorage["msp_location_enabled"] = "true";
-
-    console.log("Set defaults");
-
-    //Open the xml file
-    xmlDoc = getXML("/xml/default/vocabularies.xml");
-    localStorage["uservocabularies/A"] = new XMLSerializer().serializeToString(xmlDoc);
-
     //Selectionsets
-    xmlDoc = getXML("/xml/default/selectionsets/A.xml");
-    localStorage["selectionsets/?vocabulary_id=A"] = new XMLSerializer().serializeToString(xmlDoc);
-
-    xmlDoc = getXML("/xml/default/selectionsets/B.xml");
-    localStorage["selectionsets/?vocabulary_id=B"] = new XMLSerializer().serializeToString(xmlDoc);
-
-    xmlDoc = getXML("/xml/default/selectionsets/C.xml");
-    localStorage["selectionsets/?vocabulary_id=C"] = new XMLSerializer().serializeToString(xmlDoc);
-
+    setXML("/xml/default/selectionsets/A.xml");
+    //defaultSSA = new XMLSerializer().serializeToString(xmlDoc);
+    
+    setXML("/xml/default/selectionsets/B.xml");
+    //defaultSSB = new XMLSerializer().serializeToString(xmlDoc);
+    
+    
+    setXML("/xml/default/selectionsets/C.xml");
+    //defaultSSC = new XMLSerializer().serializeToString(xmlDoc);
+    
     //Layouts
-    xmlDoc = getXML("/xml/default/layouts/A.xml");
-    localStorage["layouts/A"] = new XMLSerializer().serializeToString(xmlDoc);
+    setXML("/xml/default/layouts/A.xml");
+    //defaultLayoutA = new XMLSerializer().serializeToString(xmlDoc);
+    //console.info(defaultLayoutA);
+    
+    setXML("/xml/default/layouts/B.xml");
+    //defaultLayoutB = new XMLSerializer().serializeToString(xmlDoc);
 
-    xmlDoc = getXML("/xml/default/layouts/B.xml");
-    localStorage["layouts/B"] = new XMLSerializer().serializeToString(xmlDoc);
-
-    xmlDoc = getXML("/xml/default/layouts/C.xml");
-    localStorage["layouts/C"] = new XMLSerializer().serializeToString(xmlDoc);
+    setXML("/xml/default/layouts/C.xml");
+    //defaultLayoutC = new XMLSerializer().serializeToString(xmlDoc);
 
     //Themes
-    xmlDoc = getXML("/xml/default/themes/A.xml");
-    localStorage["themes/A"] = new XMLSerializer().serializeToString(xmlDoc);
+    setXML("/xml/default/themes/A.xml");
+    //defaultThemeA = new XMLSerializer().serializeToString(xmlDoc);
 
-    xmlDoc = getXML("/xml/default/themes/B.xml");
-    localStorage["themes/B"] = new XMLSerializer().serializeToString(xmlDoc);
+    setXML("/xml/default/themes/B.xml");
+    //defaultThemeB = new XMLSerializer().serializeToString(xmlDoc);
 
     //Items
-    xmlDoc = getXML("/xml/default/items/A.xml");
-    localStorage["items/?selectionset_id=A"] = new XMLSerializer().serializeToString(xmlDoc);
+    setXML("/xml/default/items/A.xml");
+    //defaultItemsA = new XMLSerializer().serializeToString(xmlDoc);
 
-    xmlDoc = getXML("/xml/default/items/B.xml");
-    localStorage["items/?selectionset_id=B"] = new XMLSerializer().serializeToString(xmlDoc);
+    setXML("/xml/default/items/B.xml");
+    //defaultItemsB = new XMLSerializer().serializeToString(xmlDoc);
+    
+    setXML("/xml/default/items/C.xml");
+    //defaultItemsC = new XMLSerializer().serializeToString(xmlDoc);
+    
+    setXML("/xml/default/items/D.xml");
+    //defaultItemsD = new XMLSerializer().serializeToString(xmlDoc);
+    
+    setXML("/xml/default/items/E.xml");
+    //defaultItemsE = new XMLSerializer().serializeToString(xmlDoc);
+    
+    
+        
+    console.log("About to save some more values to storage");
+    
+    chrome.storage.local.set({
+            'msp_on_open': onOpenDefault,
+            'msp_voice_name' : voiceNameDefault,
+            'msp_voice_rate' : rateDefault,
+            'msp_voice_pitch' : pitchDefault,
+            'msp_voice_volume' : volumeDefault,
+            'msp_voice_enqueue' : voiceEnqueueDefault,
+            'msp_vocab' : defaultVocab,
+            'msp_switch_type' : defaultSwitchType,
+            'msp_switch_quantity' : defaultSwitchQuantity,
+            'msp_switch_sw1' : defaultSW1,
+            'msp_switch_sw2' : defaultSW2,
+            'msp_switch_sw1Code' : defaultSW1Code,
+            'msp_switch_sw2Code' : defaultSW2Code,
+            'msp_switch_repeats' : defaultSwitchRepeats,
+            'msp_switch_interval' : defaultSwitchIntervals,
+            'msp_switch_spacing' : defaultSwitchSpacing,
+            'msp_location_range' : defaultLocationRange,
+            'msp_location_enabled' : defaultLocationState
+        }, function() {
+            // Notify that we saved.
+            //var msp_install_date = value.msp_install_date;
+            console.log('Items saved to storage');
+        });  
 
-    xmlDoc = getXML("/xml/default/items/C.xml");
-    localStorage["items/?selectionset_id=C"] = new XMLSerializer().serializeToString(xmlDoc);
 
-    xmlDoc = getXML("/xml/default/items/D.xml");
-    localStorage["items/?selectionset_id=D"] = new XMLSerializer().serializeToString(xmlDoc);
+    
 
-    xmlDoc = getXML("/xml/default/items/E.xml");
-    localStorage["items/?selectionset_id=E"] = new XMLSerializer().serializeToString(xmlDoc);
+ /*   
+    console.log("ABOUT TO TRY TO GET");
+    var key = "/xml/default/selectionsets/C.xml";
+    //var value = "<xml>Some xml in here</xml>";
+    //var nameThree = "carl";
+    //var nameFour = "dan";
+
+    var obj = {};
+
+    //obj[key] = value;
+
+    //chrome.storage.local.set(obj);
+
+    chrome.storage.local.get(obj[key], function(result)
+         {
+            console.log("JUst tried getting the result with " + result[key]);
+
+    });
+ */   
+    
+    
+}
+
+///////////////////////////////////////////
+//HERE - DO THIS BIT
+///////////////////////////////////////////
+
+function setXML(path) {
+    
+    var xhr = new XMLHttpRequest();
+    
+    xhr.open("GET", path, true);
+    xhr.onload = function (e) {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {        
+                //Got the xml, now set to storage
+
+                var obj = {};
+
+                obj[path] = xhr.responseText;
+
+                chrome.storage.local.set(obj);
+
+            } else {
+                console.error(xhr.statusText);
+            }
+        } else {
+            console.log("Redy state is " + xhr.readyState);   
+        }
+    };
+    xhr.onerror = function (e) {
+    console.error(xhr.statusText);
+    };
+
+    xhr.send(null);    
 
 }
 
 function getXML(path) {
+   
+
+    var xmlOutput = "blah";
     //Get xml and return to calling function
+    
+   /* 
     xmlhttp = new XMLHttpRequest();
-    xmlhttp.open("GET", path, false);
+    xmlhttp.open("GET", path, true);
     xmlhttp.send();
+    
+//    console.log ("Got for path " + path + ": " + xmlhttp.responseXML);
+    console.log ("Got for path " + path + ": " + xmlhttp.responseXML);
+    
+
+    
     return xmlhttp.responseXML;
 
+
+    
+  
+    console.log("STarting to get");
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", path, true);
+    xhr.onload = function (e) {
+        console.log("LOaded xhr..." + xhr.readyState);
+        if (xhr.readyState === 4) {
+            console.log("Ready state is 4");
+            console.log("status is " + xhr.status);
+            if (xhr.status === 200) {
+                console.log("Response Type " + xhr.responseType);
+                console.log("Response Text " + xhr.responseText);
+                console.log("Response " + xhr.response);
+                console.log("Response XML " + xhr.responseXML);
+                xmlOutput = xhr.responseXML;
+                //console.log(xhr.responseText);
+            } else {
+                console.error(xhr.statusText);
+            }
+        } else {
+            console.log("Redy state is " + xhr.readyState);   
+        }
+    };
+    xhr.onerror = function (e) {
+      console.error(xhr.statusText);
+    };
+    xhr.send(null);    
+      
+    console.log("at botto, got " + xmlOutput);
+    return xmlOutput;
+*/    
+    
 }
 
-
+/*
 function authUser() {
 
     console.log("Starting auth user...");
@@ -377,7 +559,6 @@ function authUser() {
                 }
             });
 
-            */
 
             alert("Successfully signed in");
             sync();
@@ -393,78 +574,197 @@ function authUser() {
         }
     });
 }
+*/
 
+function authUser() {
 
-apiRequest = function (uri,manifest,element) {
+    console.log("Starting auth user...");
 
-    //Make some requests to get vocabulary data
-    api_url = "https://mespee.ch/api/" + uri;
-    console.log("Sending request " + api_url + "...to get vocab data and build manifests");
+    xmlToSubmit = "<user>";
+    xmlToSubmit += "<username>" + document.getElementById('username').value + "</username>";
+    xmlToSubmit += "<password>" + document.getElementById('password').value + "</password>";
+    xmlToSubmit += "</user>";
+
+    console.log("About to auth user with " + xmlToSubmit);
 
     $.ajax({
-
-        async: false,
         //cache: false,
+        //crossDomain: true,
+        //async: false,
         headers: {
-            'apikey': msp_apikey,
-            'token': localStorage["msp_token"]
+            'apikey': 'asdqwe123'
         },
-        url: api_url,
+        url: 'https://mespee.ch/api/auth',
+        type: 'POST',
+        data: {
+            data: xmlToSubmit
+        },
         success: function (xml) {
+            //Retrieve user token
+            var token = $(xml).find('token').text(); // Store token for subsequent requests
+            var user = $(xml).find('id').text(); // Store token for subsequent requests
 
-            var manifestText = localStorage[manifest];
-            var imageManifestText = localStorage["imageManifest"];
-            var layoutManifestText = localStorage["layoutManifest"];
-            var themeManifestText = localStorage["themeManifest"];
-            
-            $(xml).find(element).each(function () {
-            
-                manifestText += $(this).find('id').text() + ";";
-            
-                //Make a special case for items, to also get representation and add to image manifest
-                //Only add the image to the manifest if a value is present
-                if (element=="item" && $(this).find('representation').text() != "none")
-                {
-                    imageManifestText += $(this).find('representation').text() + ";";
-                }
+            console.log("Token is " + token + " for user " + user);
 
-                //Get the layout_id's for Layout Manifest
-                if (element=="selectionset")
-                {
-                    //Need to avoid putting duplicates in, but requires delimiting character too
-                    layoutManifestText += $(this).find('layout_id').text() + ";";
-                }
+            //Set some values in local storage
+            chrome.storage.local.set({
+                    'msp_token': token,
+                    'msp_user_id' : user
+                }, function() {
+                    // Notify that we saved.
+                    //var msp_install_date = value.msp_install_date;
+                    console.log('Items saved to storage');
+                
+                    switch ($(xml).find('default_symbolset').text()) {
 
-                //Get the theme_id's for Theme Manifest
-                if (element=="vocabulary")
-                {
-                    themeManifestText += $(this).find('theme_id').text() + ";";
-                    //console.log($(this).find('representation').text());
-                }
+                        case "1":
+                            preferredSs = "ss";
+                            break;
+                        case "2":
+                            preferredSs = "wi"
+                            break;
+                        case "3":
+                            preferredSs = "me"
+                            break;
+                        case "4":
+                            preferredSs = "mu"
+                            break;
 
-            });
+                    }
 
-            localStorage[manifest] = manifestText;
-            localStorage["imageManifest"] = imageManifestText;
-            localStorage["layoutManifest"] = layoutManifestText;
-            localStorage["themeManifest"] = themeManifestText;
-
-            //Storing this in local storage at the moment, but worried quota will be exceeded.            
-            localStorage[uri] = new XMLSerializer().serializeToString(xml);
- 
-            document.getElementById("status").innerHTML = uri;
-
+                    console.log("Signed in");
+                    //..now do this:
+                    $("#signin-form").hide();
+                    $("#holder").show();
+                
+                });  
         },
         error: function (xhr) {
-            xml = xhr.responseXML; // complete XmlHttpRequest object returned
-            var e = "";
+            console.log("There was an error");
+            xml = xhr.responseXML;
             $(xml).find('error').each(function () {
-                e += $(this).find('message').text() + ". ";
-                console.log($(this).find('message').text()); // log errors in console
+                console.log("Your username or password were incorrect, please try again.")
             });
         }
     });
+}
 
+apiRequest = function (uri, manifest, element, completion) {
+
+    //completion indicates if it is the last cycle.
+    
+    
+    //Make some requests to get vocabulary data
+    api_url = "https://mespee.ch/api/" + uri;
+
+   
+    
+        //Check for some values in local storage
+    chrome.storage.local.get([
+        'msp_token'
+        ], function (value) {
+
+            //console.log("Got some stuff here. Token is " + value.msp_token);
+            //console.log("API key is " + msp_apikey);
+            ///console.log("URL is " + api_url);
+            
+            
+        
+            $.ajax({
+
+            async: true,
+            //cache: false,
+            headers: {
+                'apikey': msp_apikey,
+                'token': value.msp_token
+            },
+            url: api_url,
+            success: function (xml) {
+    
+                //var manifestText = value.manifestValue;
+                //var imageManifestText = value.imageManifest;
+                //var layoutManifestText = value.layoutManifest;
+                //var themeManifestText = value.themeManifest;
+
+                $(xml).find(element).each(function () {
+                            
+                    //console.log("FOund some stuff");
+                    manifestText += $(this).find('id').text() + ";";
+
+                    //Make a special case for items, to also get representation and add to image manifest
+                    //Only add the image to the manifest if a value is present
+                    if (element=="item" && $(this).find('representation').text() != "none")
+                    {
+                        imageManifest += $(this).find('representation').text() + ";";
+                    }
+
+                    //Get the layout_id's for Layout Manifest
+                    if (element=="selectionset")
+                    {
+                        //Need to avoid putting duplicates in, but requires delimiting character too
+                        layoutManifest += $(this).find('layout_id').text() + ";";
+                    }
+
+                    //Get the theme_id's for Theme Manifest
+                    if (element=="vocabulary")
+                    {
+                        themeManifest += $(this).find('theme_id').text() + ";";
+                        //console.log($(this).find('representation').text());
+                    }
+
+                });
+
+                console.log("Manifest text for " + manifest + " is " + manifestText);
+                
+                    //Set some values    
+                 chrome.storage.local.set({
+                    manifest: manifestText,
+                    'imageManifest' : imageManifest,
+                    'layoutManifest' : layoutManifest,
+                    'themeManifest' : themeManifest,
+                    uri : new XMLSerializer().serializeToString(xml),
+                    'msp_voice_enqueue' : voiceEnqueueDefault,
+                    'msp_vocab' : defaultVocab,
+                    'msp_switch_type' : defaultSwitchType,
+                    'msp_switch_quantity' : defaultSwitchQuantity,
+                    'msp_switch_sw1' : defaultSW1,
+                    'msp_switch_sw2' : defaultSW2,
+                    'msp_switch_sw1Code' : defaultSW1Code,
+                    'msp_switch_sw2Code' : defaultSW2Code,
+                    'msp_switch_repeats' : defaultSwitchRepeats,
+                    'msp_switch_interval' : defaultSwitchIntervals,
+                    'msp_switch_spacing' : defaultSwitchSpacing,
+                    'msp_location_range' : defaultLocationRange,
+                    'msp_location_enabled' : defaultLocationState
+                }, function() {
+                    // Notify that we saved.
+                    //var msp_install_date = value.msp_install_date;
+                    console.log('Items saved to storage');
+                    document.getElementById("status").innerHTML = uri;
+                });        
+                
+                //localStorage[manifest] = manifestText;
+                //localStorage["imageManifest"] = imageManifestText;
+                //localStorage["layoutManifest"] = layoutManifestText;
+                //localStorage["themeManifest"] = themeManifestText;
+
+                //Storing this in local storage at the moment, but worried quota will be exceeded.            
+                //localStorage[uri] = new XMLSerializer().serializeToString(xml);
+
+
+
+            },
+            error: function (xhr) {
+                console.log("Looks like there's been an error");
+                xml = xhr.responseXML; // complete XmlHttpRequest object returned
+                var e = "";
+                $(xml).find('error').each(function () {
+                    e += $(this).find('message').text() + ". ";
+                    console.log($(this).find('message').text()); // log errors in console
+                });
+            }
+        });    
+    });
 };
 
 function checkIfData(){
@@ -514,34 +814,46 @@ function flipScreenSwitches(){
 
     }
 
-
     console.log($("#screenSw1").val());
     console.log($("#screenSw2").val());
     
-
 }
 
 function getVocabDescription() {
 
-    if(localStorage["msp_userid"]){
+    //Get user's ID
+    chrome.storage.local.get('msp_user_id', function (value) {
+        currentUser = value.msp_user_id; 
         
-        vocaburi = "uservocabularies/" + localStorage["msp_userid"];
-    } else {
-        vocaburi = "uservocabularies/A";
-    }
-
-    //vocaburi = "uservocabularies/" + localStorage["msp_userid"];
-    vocabListxml = localStorage[vocaburi];
-    var parser=new DOMParser();
-    xml=parser.parseFromString(vocabListxml,"text/xml");
-
-    //alert("List " + vocabListxml);
-
-    $(xml).find("vocabulary").each(function () {            
-        if($(this).find('id').text()==$('#userVocabs option:selected').val()){
-            document.getElementById("description").innerText = $(this).find('description').text(); 
+        if(value.msp_user_id){
+            //the user's vocabulary
+            vocaburi = "uservocabularies/" + currentUser;
+        } else {
+            //use a default vocabulary
+            vocaburi = "/xml/default/vocabularies.xml";
         }
+            
     });
+    
+    var obj = {};
+
+
+    chrome.storage.local.get(obj[vocaburi], function(result)
+         {
+        
+            //Data stored as text so we need to parse it to XML
+            var parser = new DOMParser();
+            xml = parser.parseFromString(result[vocaburi], "text/xml");
+
+            $(xml).find("vocabulary").each(function () {
+                if($(this).find('id').text()==$('#userVocabs option:selected').val()){
+                    document.getElementById("description").innerText = $(this).find('description').text(); 
+                }           
+                
+            });  
+
+    });
+
 }
 
 //Not sure if this is needed now? Delete?
@@ -551,18 +863,6 @@ function getVocabList() {
     populateVocabularies(vocabLocation, "")
 }
 
-//DELETE??
-function getXML(path) {
-
-    path = path + "?t=" + Math.random();
-
-    //Get xml and return to calling function
-    xmlhttp = new XMLHttpRequest();
-    xmlhttp.open("GET", path, false);
-    xmlhttp.send();
-    return xmlhttp.responseXML;
-
-}
 
 function hideProgressBar(){
 
@@ -627,17 +927,36 @@ function populateVocabularies(manifestPath, selectedItem) {
    
     var vocabListXml;
     
+    console.log("Populating vocabs...");
+    
+    chrome.storage.local.get('msp_user_id', function (value) {
+        currentUser = value.msp_user_id; 
+        console.log("Current user is " + currentUser);
+    
+    });
+    
+    
+    
+    //                    'msp_token': token,
+    //                'msp_userid' : $(xml).find('id').text()
+    
+    
+    //console.log("User ID from variab;e is " + msp_user_id);
+                
+    /*REINSTATE THIS
+    
     //If user not signed in, load some basic predefined vocabs
     if (!localStorage["msp_userid"]) {
-
+*/
         //alert("You just want to use free ones.");
-        vocaburi = "uservocabularies/A";
-
+        vocaburi = "/xml/default/vocabularies.xml";
+/*
     } else {
 
-        vocaburi = "uservocabularies/" + localStorage["msp_userid"];
 
-    }
+        vocaburi = "uservocabularies/" + localStorage["msp_userid"];
+*/
+  //  }
 
     //alert("Vocab uri is " + vocaburi);
 
@@ -648,61 +967,57 @@ function populateVocabularies(manifestPath, selectedItem) {
     //Clear drop down
     $("#userVocabs").empty();
 
-    var parser = new DOMParser();
-    xml = parser.parseFromString(localStorage[vocaburi], "text/xml");
+    var obj = {};
 
-    $(localStorage[vocaburi]).find("vocabulary").each(function () {
-        $("#userVocabs").append('<option value=' + $(this).find('id').text() + '>' + $(this).find('name').text() + '</option>');
-        document.getElementById("description").innerText = $(this).find('description').text();
-    });
+    chrome.storage.local.get(obj[vocaburi], function(result)
+        {
+            var parser = new DOMParser();
+            xml = parser.parseFromString(result[vocaburi], "text/xml");
 
-    // If user has not selected a vocab as they may have done an initial vocab
-    // sync but not selected one. Set to the first on the list.
+            $(xml).find("vocabulary").each(function () {
+                $("#userVocabs").append('<option value=' + $(this).find('id').text() + '>' + $(this).find('name').text() + '</option>');
+                document.getElementById("description").innerText = $(this).find('description').text();
+            });
 
-    if (!localStorage["msp_currentSS"]) {
-        //alert("NEed to set a ss with " + $("#userVocabs").val());
-        localStorage["msp_currentSS"] = $(this).find('id').text();
-    }
-
-    //Set the selected vocab
-    $("select#userVocabs").val(localStorage["msp_vocab"]);
-
-    //Get the description of the selected option
-    getVocabDescription() 
+            //Get the description of the selected option
+            getVocabDescription() 
+        });
 }
 
 function populateVoices(){
     
-    //Set voice
-    var voice = localStorage["msp_voice_name"];
-
-    voices = document.getElementById('voiceName');
-
     //Get available voices and populate select box
-    chrome.tts.getVoices(function (va) {
-        voiceArray = va;
+    chrome.tts.getVoices(function (voices) {
+        
+        //voiceArray = va;
         var language;
-        for (var i = 0; i < voiceArray.length; i++) {
-            var opt = document.createElement('option');
-            opt.setAttribute('value', voiceArray[i].voiceName);
-            if (voiceArray[i].lang) {
-                language = " (" + voiceArray[i].lang + ")";
+        for (var i = 0; i < voices.length; i++) {
+            
+            if (voices[i].lang) {
+                language = " (" + voices[i].lang + ")";
             } else {
                 language = "";
             }
-            if (voiceArray[i].voiceName == "native") {
+            
+            if (voices[i].voiceName == "native") {
                 voiceText = defaultVoiceText;
             } else {
-                voiceText = voiceArray[i].voiceName;
+                voiceText = voices[i].voiceName;
             }
-            opt.innerText = voiceText + language;
-            if (voiceArray[i].voiceName == voice) {
-                opt.setAttribute('selected', 'selected');
+            
+            
+            text = "text";
+            val = "value";
+            
+            $('#voiceName').append( new Option(voiceText,voices[i].voiceName) );
+            
+            if (voices[i].voiceName == msp_voice_name) {
+                console.log("THis is one I want to select " + voices[i].voiceName);
+                $('#voiceName').val( voices[i].voiceName )
             }
-            voices.appendChild(opt);
+            
         }
     });
-
 }
 
 function resetDefaults() {
@@ -724,34 +1039,37 @@ function roundNumber(number) {
 
 function save_options() {
 
-    //Save values to local storage
-    localStorage["msp_on_open"] = $("#onOpen :selected").val();
-    localStorage["msp_voice_name"] = $("#voiceName :selected").val();
-    localStorage["msp_voice_rate"] = roundNumber(document.getElementById("rate").value);
-    localStorage["msp_voice_pitch"] = roundNumber(document.getElementById("pitch").value);
-    localStorage["msp_voice_enqueue"] = document.getElementById("enqueue").checked;
-    localStorage["msp_auto_update"] = document.getElementById("checkUpdate").checked;
-    localStorage["msp_voice_volume"] = roundNumber(document.getElementById("volume").value);
-    //localStorage["msp_access_type"] = $("#accessType :selected").val();
-    localStorage["msp_vocab"] = document.getElementById("userVocabs").value;
-    
-    //Switch access settings
-    localStorage["msp_switch_type"] = $("#accessType :selected").val();
-    localStorage["msp_switch_quantity"] = $("#switchQuantity :selected").val();
-    localStorage["msp_switch_sw1"] = $("#sw1").val();
-    localStorage["msp_switch_sw2"] = $("#sw2").val();
-    localStorage["msp_switch_sw1Code"] = $("#sw1Code").val();
-    localStorage["msp_switch_sw2Code"] = $("#sw2Code").val();
-    localStorage["msp_switch_repeats"] = $("#repeats").val();
-    localStorage["msp_switch_interval"] = $("#interval").val();
-    localStorage["msp_switch_alignment"] = $("#alignment :selected").val();
-    localStorage["msp_switch_screenSw1"] = $("#screenSw1 :selected").val();
-    localStorage["msp_switch_screenSw2"] = $("#screenSw2 :selected").val();
-    localStorage["msp_switch_spacing"] = $("#spacing").val();
+    //Save some values
+    //Test set some values and set variable
+    chrome.storage.local.set({
+        'msp_on_open': $("#voiceName :selected").val(),
+        'msp_voice_name' : $("#voiceName :selected").val(),
+        'msp_voice_rate' : roundNumber(document.getElementById("rate").value),
+        'msp_voice_pitch' : roundNumber(document.getElementById("pitch").value),
+        'msp_voice_enqueue' : document.getElementById("enqueue").checked,
+        'msp_auto_update' : document.getElementById("checkUpdate").checked,
+        'msp_voice_volume' : roundNumber(document.getElementById("volume").value),
+        'msp_vocab' : document.getElementById("userVocabs").value,
+        'msp_switch_type' : $("#accessType :selected").val(),
+        'msp_switch_quantity' : $("#switchQuantity :selected").val(),
+        'msp_switch_sw1' : $("#sw1").val(),
+        'msp_switch_sw2' : $("#sw2").val(),
+        'msp_switch_sw1Code' : $("#sw1Code").val(),
+        'msp_switch_sw2Code' : $("#sw2Code").val(),
+        'msp_switch_repeats' : $("#repeats").val(),
+        'msp_switch_interval' : $("#interval").val(),
+        'msp_switch_alignment' : $("#alignment :selected").val(),
+        'msp_switch_screenSw1' : $("#screenSw1 :selected").val(),
+        'msp_switch_screenSw2' : $("#screenSw2 :selected").val(),
+        'msp_switch_spacing' : $("#spacing").val(),
+        'msp_location_range' : $("#locationRange").val(),
+        'msp_location_enabled' : document.getElementById("locationEnabled").checked
+        
+    }, function() {
 
-    //Need to do a check to make sure the value is valid
-    localStorage["msp_location_range"] = $("#locationRange").val();
-    localStorage["msp_location_enabled"] = document.getElementById("locationEnabled").checked;
+      console.log('Looks like all the values have been saved to storage! Great! Rate is ' + roundNumber(document.getElementById("rate").value));
+
+    }); 
 
     statusMessage(messageSave, statusMessageDuration)
 }
@@ -759,11 +1077,11 @@ function save_options() {
 function saveWebImage(url,stage,stages){
     
     
-        //Modify to take account of dropbox
-        //Need to improve this.
-     //https://mespee.ch/images/symbols/250https:
-     url = url.replace("https://mespee.ch/images/symbols/250https:", "https:");
-     console.log("URL IS " + url);
+    //Modify to take account of dropbox
+    //Need to improve this.
+    //https://mespee.ch/images/symbols/250https:
+    url = url.replace("https://mespee.ch/images/symbols/250https:", "https:");
+    console.log("URL IS " + url);
 
     //Save the image as a blob in local storage    
     stage = stage + 1;
@@ -856,124 +1174,160 @@ function setAccessControls(){
 
     //alert($("#accessType").val());
 
-    //Set access type select box
-    switch($("#accessType").val()) {
 
-        case "switch":
-            //Switch access
-            $(".screen-sw2").hide();        //Always hide
-            $(".sw1").show();               //Always show
+    //Retrieve some values
+    chrome.storage.local.get([
+        'msp_switch_screenSw1',
+        'msp_switch_screenSw2'
+    ], function (value) {
+    
+    
+    
+        //Set access type select box
+        switch($("#accessType").val()) {
 
-            $(".switchQuantity").show();
+            case "switch":
+                //Switch access
+                $(".screen-sw2").hide();        //Always hide
+                $(".sw1").show();               //Always show
+                $("#switchWarning").show();
+                
+                $(".switchQuantity").show();
 
-            if ($("#switchQuantity").val() == 1){
-                //$(".sw1").show();
-                $(".sw2").hide();
-                $(".repeats").show();
-                $(".interval").show();
-            } else {
-                //$(".sw1").hide();
-                $(".sw2").show();
-                $(".repeats").hide();
-                $(".interval").hide();
-            }
+                if ($("#switchQuantity").val() == 1){
+                    //$(".sw1").show();
+                    $(".sw2").hide();
+                    $(".repeats").show();
+                    $(".interval").show();
+                } else {
+                    //$(".sw1").hide();
+                    $(".sw2").show();
+                    $(".repeats").hide();
+                    $(".interval").hide();
+                }
 
-            break;
-        case "screen":
-            //Use screen as a switch
-            $(".screen-sw2").show();
-            $(".sw1").hide();
-            $(".sw2").hide();
-            $(".switchQuantity").show();
-
-            if ($("#switchQuantity").val() == 1){
-                $(".screen-sw2").hide();
-            } else {
+                break;
+            case "screen":
+                //Use screen as a switch
                 $(".screen-sw2").show();
-            }
+                $("#switchWarning").hide();                
+                $(".sw1").hide();
+                $(".sw2").hide();
+                $(".switchQuantity").show();
 
-            break;
-        case "direct":
-            //Direct selection
-            $(".sw1").hide();
-            $(".sw1").hide();
-            $(".sw2").hide();
-            $(".switchQuantity").hide();
-            $(".screen-sw2").hide();
-            break;
-    }
+                if ($("#switchQuantity").val() == 1){
+                    $(".screen-sw2").hide();
+                } else {
+                    $(".screen-sw2").show();
+                }
 
-    //Set access type select box
-    switch($("#alignment").val()) {
+                break;
+            case "direct":
+                $("#switchWarning").hide();
+                //Direct selection
+                $(".sw1").hide();
+                $(".sw1").hide();
+                $(".sw2").hide();
+                $(".switchQuantity").hide();
+                $(".screen-sw2").hide();
+                break;
+        }
 
-        case "h":
-            //Switch access
-            $("#screenSw1").empty();
-            $("#screenSw2").empty();
-            $("#screenSw1").append('<option value="l">Left</option>');
-            $("#screenSw1").append('<option value="r">Right</option>');
-            $("#screenSw2").append('<option value="r">Right</option>');
+        //Set access type select box
+        switch($("#alignment").val()) {
 
-            //If there's a value saved, use it
-            if (localStorage['msp_switch_screenSw1']) {
-                $("#screenSw1").val(localStorage['msp_switch_screenSw1']);
-            } else {
-                $("#screenSw1").val("l");
-            }
+            case "h":
+                //Switch access
+                $("#screenSw1").empty();
+                $("#screenSw2").empty();
+                $("#screenSw1").append('<option value="l">Left</option>');
+                $("#screenSw1").append('<option value="r">Right</option>');
+                $("#screenSw2").append('<option value="r">Right</option>');
 
-            if (localStorage['msp_switch_screenSw2']) {
-                $("#screenSw2").val(localStorage['msp_switch_screenSw2']);
-            } else {
-                $("#screenSw2").val("r");
-            }
+                //If there's a value saved, use it
+                if (value.msp_switch_screenSw1) {
+                    $("#screenSw1").val(value.msp_switch_screenSw1);
+                } else {
+                    $("#screenSw1").val("l");
+                }
 
-            break;
-        
-        case "v":
-            //Use screen as a switch
-            $("#screenSw1").empty();
-            $("#screenSw2").empty();
-            $("#screenSw1").append('<option value="t">Top</option>');
-            $("#screenSw1").append('<option value="b">Bottom</option>');
-            $("#screenSw2").append('<option value="b">Bottom</option>');
+                if (value.msp_switch_screenSw2) {
+                    $("#screenSw2").val(value.msp_switch_screenSw2);
+                } else {
+                    $("#screenSw2").val("r");
+                }
 
-            //If there's a value saved, use it
-            //If there's a value saved, use it
-            if (localStorage['msp_switch_screenSw1']) {
-                $("#screenSw1").val(localStorage['msp_switch_screenSw1']);
-            } else {
-                $("#screenSw1").val("t");
-            }
+                break;
 
-            if (localStorage['msp_switch_screenSw2']) {
-                $("#screenSw2").val(localStorage['msp_switch_screenSw2']);
-            } else {
-                $("#screenSw2").val("b");
-            }
+            case "v":
+                //Use screen as a switch
+                $("#screenSw1").empty();
+                $("#screenSw2").empty();
+                $("#screenSw1").append('<option value="t">Top</option>');
+                $("#screenSw1").append('<option value="b">Bottom</option>');
+                $("#screenSw2").append('<option value="b">Bottom</option>');
 
-            break;
-    }
+                //If there's a value saved, use it
+                //If there's a value saved, use it
+                if (value.msp_switch_screenSw1) {
+                    $("#screenSw1").val(value.msp_switch_screenSw1);
+                } else {
+                    $("#screenSw1").val("t");
+                }
+
+                if (value.msp_switch_screenSw2) {
+                    $("#screenSw2").val(value.msp_switch_screenSw2);
+                } else {
+                    $("#screenSw2").val("b");
+                }
+
+                break;
+        }
+    });
 }
 
 function setAccessSettings(){
     
-    //Get the saved values for access
-    $("#accessType").val(localStorage['msp_switch_type']);
-    $("#switchQuantity").val(localStorage['msp_switch_quantity']);
-    $("#sw1").val(localStorage['msp_switch_sw1']);
-    $("#sw2").val(localStorage['msp_switch_sw2']);
-    $("#sw1Code").val(localStorage['msp_switch_sw1Code']);
-    $("#sw2Code").val(localStorage['msp_switch_sw2Code']);
-    $("#repeats").val(localStorage['msp_switch_repeats']);
-    $("#interval").val(localStorage['msp_switch_interval']);
-    $("#alignment").val(localStorage['msp_switch_alignment']);
-    $("#screenSw1").val(localStorage['msp_switch_screenSw1']);
-    $("#screenSw2").val(localStorage['msp_switch_screenSw2']);
-    $("#spacing").val(localStorage['msp_switch_spacing']);
+    chrome.storage.local.get([
+        'msp_switch_type',
+        'msp_switch_quantity',
+        'msp_switch_sw1', 
+        'msp_switch_sw2',
+        'msp_switch_sw1Code',
+        'msp_switch_sw2Code',
+        'msp_switch_repeats',
+        'msp_switch_interval',
+        'msp_switch_alignment',
+        'msp_switch_screenSw1',
+        'msp_switch_screenSw2',
+        'msp_switch_spacing'], function (values) {   
+            msp_on_open = values.msp_on_open; 
+            msp_user_id = values.msp_user_id; 
+            msp_auto_update = values.msp_auto_update; 
+            msp_install_date = values.msp_install_date; 
+            msp_vocab = values.msp_vocab; 
+            msp_token = values.msp_token;
+            msp_voice_name = values.msp_voice_name;
+
+            //Get the saved values for access
+            $("#accessType").val(values.msp_switch_type);
+            $("#switchQuantity").val(values.msp_switch_quantity);
+            $("#sw1").val(values.msp_switch_sw1);
+            $("#sw2").val(values.msp_switch_sw2);
+            $("#sw1Code").val(values.msp_switch_sw1Code);
+            $("#sw2Code").val(values.msp_switch_sw2Code);
+            $("#repeats").val(values.msp_switch_repeats);
+            $("#interval").val(values.msp_switch_interval);
+            $("#alignment").val(values.msp_switch_alignment);
+            $("#screenSw1").val(values.msp_switch_screenSw1);
+            $("#screenSw2").val(values.msp_switch_screenSw2);
+        });
 }
 
 function signOut() {
 
+    console.log("Doing signout");
+    
     var db = window.openDatabase(
         'mespeech',           // dbName
         '',            // version
@@ -1025,63 +1379,85 @@ function statusMessage(message, time) {
 }
 
 function sync() {
+
+    //Retrieve some values
+    chrome.storage.local.get([
+            'msp_last_sync',
+            'imageManifest'
+        ], function (value) {   
     
-    if (!localStorage["msp_last_sync"]){
-        message = "Welcome! You need to download your vocabularies. Synchronisation about to start...";
-    } else {
-        message = "Synchronisation about to start, it'll only take a tick...";
-    }
+        console.log("Entering Sync");
 
-    $("#progressbar").show();
+        if (value.msp_last_sync){
+            message = "Welcome! You need to download your vocabularies. Synchronisation about to start...";
+        } else {
+            message = "Synchronisation about to start, it'll only take a tick...";
+        }
 
-    progStage = progStage + 1
-	$(function() {
-		$( "#progressbar" ).progressbar({
-			value: progStage
-		});
-	});
+        $("#progressbar").show();
 
-    document.getElementById('status').innerHTML = 'Synchronising selection sets...';
+        progStage = progStage + 1
+        $(function() {
+            $( "#progressbar" ).progressbar({
+                value: progStage
+            });
+        });
 
-    alert(message); 
+        document.getElementById('status').innerHTML = 'Synchronising selection sets...';
 
-    //The chunk below follows this post:
-    //http://stackoverflow.com/questions/7342084/jquery-javascript-how-to-wait-for-manipulated-dom-to-update-before-proceeding
-    //Looks a bit messy, but works for now
-    
-    setTimeout(function(){
-        start = new Date();
-         end = syncVocabularies();
-         do {start = new Date();} while (end-start > 0);
+        //alert(message); 
 
-         	$(function() {
-                progStage = progStage + 1;
-		        $( "#progressbar" ).progressbar({
-		            value: progStage
-		        });
-	        });
+        //The chunk below follows this post:
+        //http://stackoverflow.com/questions/7342084/jquery-javascript-how-to-wait-for-manipulated-dom-to-update-before-proceeding
+        //Looks a bit messy, but works for now
 
-            document.getElementById('status').innerHTML = 'Synchronising images...'; 
+        setTimeout(function(){
+            start = new Date();
+             end = syncVocabularies();
+             do {start = new Date();} while (end-start > 0);
 
-            //If no images to download, change progress bar and delete it.
-            if(!localStorage["imageManifest"]){
-                
-                //REMOVED 5/4/2013
-                hideProgressBar();
-                checkIfData();
-                document.getElementById('status').innerHTML = 'Ready'; 
-            }
+                $(function() {
+                    progStage = progStage + 1;
+                    $( "#progressbar" ).progressbar({
+                        value: progStage
+                    });
+                });
 
-        },10);
-    
-    populateVocabularies();
+                document.getElementById('status').innerHTML = 'Synchronising images...'; 
 
-    var d = new Date();
-    localStorage["msp_last_sync"] = d.toUTCString();
+                //If no images to download, change progress bar and delete it.
+                if(value.imageManifest){
+
+                    //REMOVED 5/4/2013
+                    hideProgressBar();
+                    checkIfData();
+                    document.getElementById('status').innerHTML = 'Ready'; 
+                }
+
+            },10);
+
+        populateVocabularies();
+
+        var d = new Date();
+        
+        //Set some values
+        chrome.storage.local.set({
+            }, function() {
+                // Notify that we saved.
+                //var msp_install_date = value.msp_install_date;
+                console.log('Updated sync last sync');
+            }); 
+        
+        
+        //UPDATE THIS
+        //localStorage["msp_last_sync"] = d.toUTCString();
+    });
 }
 
 function syncImages(){
 
+    console.log("Syncing images...");
+    
     var imgSyncPath = "https://mespee.ch/images/symbols/250";
     var i = localStorage["imageManifest"].split(";");
     var trimmedPath;
@@ -1104,83 +1480,241 @@ function syncImages(){
 }
 
 function syncVocabularies() {
+
     
-    //Load the vocabulary data
-    if (localStorage["msp_token"] && localStorage["msp_userid"]) {
-                  
-        //alert("About to sync");
-
-        //Reset the manifest files
-        localStorage["vocabularyManifest"]="";
-        localStorage["selectionSetManifest"]="";
-        localStorage["layoutManifest"]="";
-        localStorage["itemManifest"]="";
-        localStorage["imageManifest"]="";
-        localStorage["themeManifest"]="";
-
-        //Get the vocabularies
-        $(function() {
-		    $( "#progressbar" ).progressbar({
-			    value: 10
-		    });
-	    });
+    vocabularyManifestUpdated = false;
+    layoutManifestUpdated = false;
+    themeManifestUpdated = false;
+    imageManifestUpdated = false;
+    selectionSetManifestUpdated = false;
+    
+    
+    //Retrieve some values
+    chrome.storage.local.get([
+            'msp_token',
+            'msp_user_id',
+        ], function (value) { 
         
-        var q = 'uservocabularies/' + localStorage["msp_userid"];
+            //Load the vocabulary data
+            if (value.msp_token && value.msp_user_id) {
+                
+                //console.log("Need to run the sync now");
+                var q = 'uservocabularies/' + value.msp_user_id;
+                buildVocabularyManifest(q);
+                
+/*                
+                
+                
+                    //Get the vocabularies
+                    $(function() {
+                        $( "#progressbar" ).progressbar({
+                            value: 10
+                        });
+                    });
 
-        console.log("Sending request at line 845 " + q);
-        apiRequest(q,"vocabularyManifest","vocabulary");
+                    var q = 'uservocabularies/' + value.msp_user_id;
 
-        //Get the selectionsets for the vocabularies
-        var str=localStorage["vocabularyManifest"];
-        var n=str.split(";");
-        for (i=0; i<n.length-1; i++)
-        {
-            document.getElementById("status").innerHTML = "Getting " + k + " of " + (n.length - 1) + " vocabularies.";
-            apiRequest('selectionsets/?vocabulary_id=' + n[i],"selectionSetManifest","selectionset");
-            var k = i + 1;
-        }
+                    console.log("Sending request at line 845 " + q);
+                    apiRequest(q, "vocabularyManifest", "vocabulary", true);
 
-        //Get the layouts
-        var str=localStorage["layoutManifest"];
-        var n=str.split(";");
-        for (i=0; i<n.length-1; i++)
-        {
-            apiRequest('layouts/' + n[i],"layoutManifest","layout");
-            var k = i + 1;
-            document.getElementById("status").innerHTML = "Getting " + k + " of " + (n.length - 1) + " layouts.";
-        }
+                    //Get the selectionsets for the vocabularies
+                    var str = vocabularyManifest;
+                    
+                    console.log("VALUE IS " + str);
+                    
+                    var n = str.split(";");
+                    for (i=0; i<n.length-1; i++)
+                    {
+                        document.getElementById("status").innerHTML = "Getting " + k + " of " + (n.length - 1) + " vocabularies.";
+                        apiRequest('selectionsets/?vocabulary_id=' + n[i],"selectionSetManifest","selectionset");
+                        var k = i + 1;
+                    }
 
-        //Get the themes
-        var str=localStorage["themeManifest"];
-        var n=str.split(";");
-        for (i=0; i<n.length-1; i++)
-        {
-            apiRequest('themes/' + n[i],"themeManifest","theme");
-            var k = i + 1;
-            console.log("Getting " + k + " of " + (n.length - 1) + " themes.")
-        }
+                    //Get the layouts
+                    var str = layoutManifest;
+                    var n = str.split(";");
+                    for (i = 0; i < n.length - 1; i++)
+                    {
+                        apiRequest('layouts/' + n[i],"layoutManifest","layout");
+                        var k = i + 1;
+                        document.getElementById("status").innerHTML = "Getting " + k + " of " + (n.length - 1) + " layouts.";
+                    }
 
-        //Get the items for the selectionsets
-        var str=localStorage["selectionSetManifest"];
-        var n=str.split(";");
-        for (i=0; i<n.length-1; i++)
-        {
-            apiRequest('items/?selectionset_id=' + n[i],"itemManifest", "item");
-            var k = i + 1;
-            console.log("Getting " + k + " of " + (n.length - 1) + " selection sets.")
-        }
-    } else {
-        alert("You need to authenticate user")
-    }
-    
-    //Synchronize images using the manifest file
-    if(localStorage["imageManifest"]){
-        syncImages();
-    }
+                    //Get the themes
+                    var str=themeManifest;
+                    var n=str.split(";");
+                    for (i=0; i<n.length-1; i++)
+                    {
+                        apiRequest('themes/' + n[i],"themeManifest","theme");
+                        var k = i + 1;
+                        console.log("Getting " + k + " of " + (n.length - 1) + " themes.")
+                    }
+
+                    //Get the items for the selectionsets
+                    var str = selectionSetManifest;
+                    var n=str.split(";");
+                    for (i=0; i<n.length-1; i++)
+                    {
+                        apiRequest('items/?selectionset_id=' + n[i],"itemManifest", "item");
+                        var k = i + 1;
+                        console.log("Getting " + k + " of " + (n.length - 1) + " selection sets.")
+                    }
+                    
+                */  
+                
+                } else {
+                    alert("You need to authenticate user")
+                }
+
+                //Synchronize images using the manifest file
+                if(value.imageManifest){
+                    syncImages();
+                }
+
+
+
+    });
+ 
 }
 
+
+buildVocabularyManifest = function (uri) {
+
+    themeManifest = "";
+    vocabularyManifest = "";
+    console.log("Building vocabulary manifest");
+        
+        
+    console.log("URI is " + uri);    
+    //apiRequest(q, "vocabularyManifest", "vocabulary", true);    
+    //completion indicates if it is the last cycle.
+        
+    //Make some requests to get vocabulary data
+    api_url = "https://mespee.ch/api/" + uri;
+
+    //Check for some values in local storage
+    chrome.storage.local.get([
+        'msp_token'
+        ], function (value) {    
+        
+            $.ajax({
+
+            async: true,
+            //cache: false,
+            headers: {
+                'apikey': msp_apikey,
+                'token': value.msp_token
+            },
+            url: api_url,
+            success: function (xml) {
+    
+                $(xml).find("vocabulary").each(function () {
+                    vocabularyManifest += $(this).find('id').text() + ";";                            
+                    themeManifest += $(this).find('theme_id').text() + ";";
+
+                });
+
+                console.log("Theme manifest is: " + themeManifest);
+                console.log("Vocabulary manifest is: " + vocabularyManifest);
+                    //Set some values    
+                chrome.storage.local.set({
+                    uri : new XMLSerializer().serializeToString(xml),
+                }, function() {
+                    
+                    var complete = false;
+                    console.log('Vocabulary XML saved to storage');
+                    //NOw want to run the next stage: 
+                    
+                    
+                    var str = vocabularyManifest;
+                    var n = str.split(";");
+                    for (i=0; i<n.length-1; i++) {
+                     
+                        if (i+2== n.length){
+                                complete = true;
+                                //console.log("THis is the last cycle");
+                        }                        
+                        buildSelectionSetManifest('selectionsets/?vocabulary_id=' + n[i],complete);
+                    }
+                });        
+            },
+            error: function (xhr) {
+                console.log("Looks like there's been an error");
+            }
+        });    
+    });
+};        
+
+buildSelectionSetManifest = function (uri,complete) {
+
+    selectionSetManifest = "";
+    layoutManifest = "";
+    console.log("Building selection set manifest for " + uri);
+        
+    //apiRequest(q, "vocabularyManifest", "vocabulary", true);    
+    //completion indicates if it is the last cycle.
+        
+    //Make some requests to get vocabulary data
+    api_url = "https://mespee.ch/api/" + uri;
+
+    //Check for some values in local storage
+    chrome.storage.local.get([
+        'msp_token'
+        ], function (value) {    
+        
+            $.ajax({
+
+            async: true,
+            //cache: false,
+            headers: {
+                'apikey': msp_apikey,
+                'token': value.msp_token
+            },
+            url: api_url,
+            success: function (xml) {
+    
+                $(xml).find("selectionset").each(function () {
+                    
+                    selectionSetManifest += $(this).find('id').text() + ";";
+                    layoutManifest += $(this).find('layout_id').text() + ";";
+                    //console.log("Found " + $(this).find('layout_id').text());
+                });
+
+                //console.log("Layout manifest is: " + layoutManifest);
+                
+                //Set some values    
+                chrome.storage.local.set({
+                    uri : new XMLSerializer().serializeToString(xml),
+                }, function() {
+                    console.log('Selection Set XML saved to storage');
+                    
+                    if (complete == true) {
+                        console.log("That was the last cycle, run the next stage");
+                        //Probaly want to run syncIMages here..
+                        
+                        //syncImages();
+                        
+                        
+                        
+                    }
+                    
+                });        
+            },
+            error: function (xhr) {
+                console.log("Looks like there's been an error");
+            }
+        });    
+    });
+};
+
+
+        
 function testSettings() {
     //Output speech to test settings
+    
+    console.log("About to test settings...");
+    
+    
     var options = {};
     options.voiceName = document.getElementById("voiceName").value;
     options.rate = roundNumber(document.getElementById("rate").value);

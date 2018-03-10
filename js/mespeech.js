@@ -50,7 +50,12 @@ var scanTimer;
 var scanCurrentChild = 0;
 var scanCurrentSelector;
 //var maxScanRepeats = chrome.local.storage.get('msp_install_date');
-var maxScanRepeats = localStorage["msp_switch_repeats"];
+//var maxScanRepeats = localStorage["msp_switch_repeats"];
+//chrome.storage.local.get("msp_switch_repeats", function (result) {
+//    maxScanRepeats = result.msp_switch_repeats;
+//    console.log("Got " + result.msp_switch_repeats);
+
+//});
 var scanRepeats = 0;
 var screenSwitchType = "Vertical"  //Horiontal or Vertical
 var screenSwitchSpace = 100         //Value in pixels
@@ -59,6 +64,10 @@ var currentLongitude = null;
 
 //var watchLocation = navigator.geolocation.watchPosition(setPosition);
 
+
+
+//TODO - UPDATE THIS
+/*
 var db = window.openDatabase(
     'mespeech',           // dbName
     '',            // version
@@ -66,6 +75,8 @@ var db = window.openDatabase(
     2 * 1024 * 1024,  // estimatedSize in bytes
     function(db) { }   // optional creationCallback
 );
+*/
+
 
 function addToMessageWindow(image,gloss,displayImage){
     

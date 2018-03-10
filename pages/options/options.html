@@ -1,4 +1,4 @@
-﻿<html>
+<html>
 <head><title>mespeech Options</title>
 <link rel="stylesheet" type="text/css" href="/css/ui-lightness/jquery-ui-1.8.23.custom.css">
 <link rel="stylesheet" type="text/css" href="/css/options.css">
@@ -13,8 +13,8 @@
     </a>
 <h2>Options</h2>
 <div id="status">Ready</div>
-        <div id="holder">
-        <div id="progressbar"></div>
+<div id="holder">
+    <div id="progressbar"></div>
     <fieldset>
         <legend>Vocabulary Options</legend>
         <ul> 
@@ -117,15 +117,16 @@
                 </select>
                 <input id="sw" type="hidden" value="" />
             </li>
+            <li id="switchWarning">Click 'Set this switch' then hit the switch or key you would like to assign to that switch.</li>
             <li class="sw1">
                 <div class="controlLabel">Switch 1</div>
-                <button id="setSw1">Set Switch 1</button>
+                <button id="setSw1">Set this switch</button>
                 &nbsp;&nbsp;Character:&nbsp;<input id="sw1" disabled="disabled" type="text" value="" />
                 &nbsp;&nbsp;Key Code:&nbsp;<input id="sw1Code" type="text" disabled="disabled" value="" />
             </li>
             <li class="sw2">
                 <div class="controlLabel">Switch 2</div>
-                <button id="setSw2">Set Switch 2</button>
+                <button id="setSw2">Set this switch</button>
                 &nbsp;&nbsp;Character:&nbsp;<input id="sw2" disabled="disabled" type="text" value="" />
                 &nbsp;&nbsp;Key Code:&nbsp;<input id="sw2Code" type="text" disabled="disabled" value="" />
             </li>
@@ -174,6 +175,19 @@
 
         </ul>
     </fieldset>
+</div>
+<div id="signin-form">
+    <div id="content">
+        <a href="http://mespeech.com"><img src="/images/mespeech_logo_150px.png" /></a>
+        <p>You need to sign in to access your online <br />content. You will only need to do this once.</p>
+        <input id="username" type="text" value="Username" /><br />
+        <input id="password" type="password" value="Password" /><br />
+	    <button id="authenticate">Sign In</button>
+        <div id="reg">
+            <a href="http://mespee.ch/user/register">Register</a>&nbsp;&nbsp;
+            <a href="http://mespee.ch/user/requestreset">Forgotten Password?</a>
+        </div>
+    </div>
 </div>
 </body>
 </html>
