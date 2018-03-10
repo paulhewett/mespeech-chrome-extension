@@ -1,0 +1,108 @@
+﻿/*These styles are system styles and cannot be changed by the user.*/
+/*Styles have been split where multiple values are stored on one line
+This will make it easier if we develop a CSS editor in the future
+These values will be the same for everyone
+*/
+html{
+	height:100%; 			/*Required to ensure children space correctly.*/
+}
+
+body{
+    height:100%; 			/*Required to ensure children space correctly.*/
+    margin-bottom:2px;		/*Page bottom margin, set to 2px because...*/
+    margin-left:0px;		/*Page left margin*/	
+    margin-right:0px;		/*Page right margin*/
+    margin-top:0px;			/*Page top margin*/
+	overflow:hidden; 		/*Ensure scroll bars are not displayed - set in Javascript if req'd*/
+    text-align:center; 		/*Align everything to the centre*/
+    font-family:Trebuchet MS;
+    font-size:small;
+}
+
+tr
+{	
+	vertical-align:middle; 	/*Align all cell contents to the middle of the cell*/
+}
+
+#fixedRows table
+{
+    height:100%; 			/*Always set the table to the full height of its parent*/
+    table-layout: fixed;
+    width:100%; 			/*Always set the table to the full width of its parent*/
+}   
+#messageWindow{
+	text-align:left;
+}
+#selectionSet
+{
+    overflow-x: hidden; 	/*Always hide vertical scroll bar*/
+    overflow-y: hidden; 	/*Always hide horizontal scroll bar*/     
+}
+      
+#selectionSet.hideVerticalScrollbar
+{
+    overflow-x: hidden; 	/*Always hide vertical scroll bar*/
+    overflow-y: auto; 		/*Display horizontal scroll bar if required*/
+}
+
+#selectionSet.hideHorizontalScrollbar
+{
+    overflow-x: auto; 		/*Display the vertical scroll bar if required*/
+    overflow-y: hidden; 	/*Always hide horizontal scroll bar*/
+}        
+        
+#selectionSet.showHorizontalScrollbar 
+{
+    overflow-x: scroll; 	/*Always show horizontal scroll bar*/
+    overflow-y: hidden; 	/*Always hide vertical scroll bar*/
+}
+
+#selectionSet table
+{
+	height:100%; 			/*Always set the table to the full height of its parent*/
+	table-layout:fixed;		/*Keeps table columns the same width*/
+    width: 100%;			/*Always set the table to the full width of its parent*/
+}
+#selectionSet tr
+{
+	height:auto;
+}    
+.systemMessageWarning{
+	display:block;
+	background-color:#99FF66;
+	border:thin green solid;
+	color:green;
+	left:0px;
+	padding: 4px 4px 4px 4px;
+	position:absolute;
+	top:0px;
+	width:100%;
+}
+.systemMessageInformation{
+	display:block;
+	background-color:#99CCFF;
+	border:thin navy solid;
+	color:navy;
+	left:0px;
+	padding: 4px 4px 4px 4px;
+	position:absolute;
+	top:0px;
+	width:100%;
+}
+.hide{
+	display:none;
+}
+#selectionSet .representation
+{
+    max-height:80%;
+    max-width:80%;
+}    
+#fixedRows .representation
+{
+    max-height:50%;
+    max-width:50%;
+}
+/*
+.scan{
+    background-color: #ff6a00;
+}*/

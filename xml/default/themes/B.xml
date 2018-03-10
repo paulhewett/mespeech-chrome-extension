@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<theme>
+    <id>13</id>
+    <name>Standard</name>
+    <description><![CDATA[Use this them when you do not intend to use the message window - it sets the selection set to the whole screen height.]]></description>
+    <type>user</type>
+    <css><![CDATA[
+        body { 
+            background-color:#c0c0c0; 
+            font-family:"Segoe UI", "Trebuchet MS", sans-serif; 
+            font-size:large; width:100%; 
+        } 
+        table { 
+            border-spacing: 10px; 
+            padding:0px;
+            margin:0px;
+        } 
+        td {	 
+            background-color:White; 
+            border: 2px solid black; 
+            border-radius: 10px; 
+            cursor:pointer; 
+        }
+        #messageWindow { 
+            background-color:White;
+            position: absolute;
+            top: 5px;
+            bottom:  5px;
+            left:  5px;
+            right:  5px;
+            border: 2px solid black;
+            border-radius: 10px; 
+        } 
+        #messageWindowContainer{
+            position: relative;
+            width: 100%; 
+        }
+        #messageWindow img { 
+            height:60%; 
+        } 
+        #selectionSet { 
+            position: absolute;
+            top: 5px;
+            bottom:  5px;
+            left:  5px;
+            right:  5px;            
+            border: 2px solid #c0c0c0;
+        } 
+        #selectionSetContainer{
+            position: relative;
+            width: 100%;  
+        }
+
+        #selectionSet img { 
+            height:35%; 
+            padding: 2px; 
+        } 
+       
+        /*SCANNING*/
+        .scan, .scan td, .scan tr, tr.scan, td.scan, #messageWindow.scan, #selectionSet.scan {
+            border: 2px solid red;
+        }
+
+        /*USER SPECIFIED STYLES*/
+        .more { 
+            background-image:url('/images/more-25.png'); 
+            background-repeat:no-repeat; 
+            background-position:right bottom; 
+        } 
+        .black { 
+            background-color:black; 
+            color:#adff2f; 
+        } 
+        .speak { 
+            background-image:url('/images/msp-25.png'); 
+            background-repeat:no-repeat; 
+            background-position:right bottom; 
+        } 
+
+        /*FOLLOWING ITEMS NOT USER CONFIGURABLE*/
+        .Gloss { 
+            padding:2px;
+        } 
+        div { 
+            text-align: center; 
+        } 
+        .messageWindowHolder { 
+            height:100%; 
+            float:left;
+        } 
+        .representation { 
+            height:100%; 
+        } 
+        ]]></css>
+    <image>image.jpg</image>
+    <created_by>2</created_by> 
+    <created_date>2012-09-10 12:06:48</created_date>
+    <modified_date>2012-09-24 09:18:34</modified_date>
+</theme>

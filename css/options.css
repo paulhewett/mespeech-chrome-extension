@@ -1,0 +1,138 @@
+﻿body {
+    font-family:Trebuchet MS;
+    font-size:small;
+    background: Black;
+    color: White;
+}
+h2
+{
+    color:#adff2f;
+}
+ul {
+    list-style: none; 
+    margin: 0; 
+    padding: 0;
+}
+li {
+    height:40px;
+}
+
+#pitch,#rate,#volume
+{
+    width: 100%;
+    display: block;
+    float:left;
+}
+select {
+    padding:4px 4px 4px 4px;
+    border:1px solid Gray;
+    font-family:Trebuchet MS;
+    font-size:small; 
+}
+input {
+
+    font-family:Trebuchet MS;
+    font-size:small;
+}
+
+fieldset 
+{
+    margin-top:20px;
+    padding: 10px 20px 10px 20px;
+    width:500px;  
+    border:1px solid white;
+}
+#voiceName,#userVocabs, #accessType, #onOpen {
+    width:380px;
+}
+#testString, #username, #password, #token {
+    width:380px;
+    padding:5px 4px 4px 4px;
+    border:1px solid Gray; 
+}
+#interval, #spacing, #repeats, #locationRange {
+    width:50px;
+    padding:5px 4px 4px 4px;
+    border:1px solid Gray; 
+}
+#sw1, #sw2, #sw1Code, #sw2Code, #sw1Config, #sw2Config {
+    width:30px;
+    padding:5px 4px 4px 4px;
+    border:1px solid Gray;
+    text-align: center; 
+}
+#save, #close, #sample, #sign-out, #sign-in, #resetDefaults, #username, #password, #token, #open, #sync, #setSwitch, #saveAccess {
+    margin-top:10px;
+    height:30px;
+    font-family:Trebuchet MS;
+    font-size:small;
+}
+
+#setSw1, #setSw2{
+    height:30px;
+    font-family:Trebuchet MS;
+    font-size:small; 
+}
+
+#save, #sample, #rateValue, #pitchvalue, #volumeValue, #resetDefaults, #open, #sync, #setSwitch, #saveAccess
+{
+    float:right;
+}
+.controlLabel 
+{
+    width:110px;
+    margin-top:2px;
+    padding:5px 4px 5px 4px;
+    float:left;
+}
+#userID
+{
+    margin-top:2px;
+}
+#description, #path
+{
+    width:370px;
+    margin-top:2px;
+    padding:5px 4px 5px 4px;
+    float:left;
+}
+#holder
+{
+    width:547px;
+}
+#progressbar{
+    margin: 10px 0px 10px 0px;
+}
+#enqueue, #checkUpdate
+{
+    margin-top:10px;
+}
+.sliderLabel
+{
+    float:left; 
+    padding-bottom: 10px; 
+    display: block; 
+    width: 132px;    
+}
+.sliderMinimume
+{
+    float: left; 
+
+}
+.sliderMaximum
+{
+    float: right; 
+
+}
+.sliderMinimum,.sliderMaximum
+{
+    font-size: x-small; 
+    top: -5px; 
+    position: relative;
+    color:Gray;
+}
+
+.controlHolder
+{
+    padding-bottom:80px;    
+}

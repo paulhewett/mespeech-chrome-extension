@@ -1,0 +1,143 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<theme>
+    <id>13</id>
+    <name>Standard</name>
+    <description><![CDATA[Use this them when you do not intend to use the message window - it sets the selection set to the whole screen height.]]></description>
+    <type>user</type>
+    <css><![CDATA[
+        html{
+            height:100%;
+        }
+        body { 
+            background-color:#c0c0c0; 
+            font-family:"Segoe UI", "Trebuchet MS", sans-serif; 
+            font-size:large; 
+            width:100%; 
+        } 
+        .scan {
+            background-color:pink;
+        }
+        .scan td {
+            background-color:pink;
+        }
+        .scan tr {
+            background-color:pink;
+        }
+        td {	 
+            background-color:White; 
+            border-color:black; 
+            border-style:solid; 
+            border-width:1px; 
+            border-radius: 10px; 
+            cursor:pointer; 
+            -moz-border-radius:10px; /*Firefox 3.6 and earlier*/ 
+            box-shadow: 5px 5px 5px #505050; 
+        } 
+        .Gloss { 
+            padding-bottom:2px; 
+            padding-left:2px; 
+            padding-right:2px; 
+            padding-top:2px; 
+        } 
+        #fixedRows { 
+            border-color:blue; 
+            border-style:solid; 
+            border-width:1px; 
+            width:100%;/*Could set this to part width*/ 
+        } 
+        #fixedRows img { 
+            height:10px; 
+            padding-bottom:2px; 
+            padding-left:2px; 
+            padding-right:2px; 
+            padding-top:2px; 
+        } 
+        #fixedRows td { 
+            border-color: black; 
+            border-style: solid; 
+            border-width: 2px; 
+        } 
+        #messageWindowContainer{
+            margin:5px;
+            height:100%;
+
+        }
+        #messageWindow { 
+            height:100%; 
+            width:100%; 
+        } 
+        table{
+        padding:0;
+        margin:0;
+        }
+        #selectionSetContainer{
+
+            /*margin:5px;*/
+        }
+        #selectionSet { 
+            padding:0px;
+            margin:5px;
+            height:100%; 
+            width:100%; 
+        } 
+        #selectionSet img { 
+            height:50%; 
+            padding-bottom:2px; 
+            padding-left:2px; 
+            padding-right:2px; 
+            padding-top:2px; 
+        } 
+        #selectionSet table { 
+            border-spacing: 10px; 
+            /*
+            padding-bottom:10px; 
+            padding-left:10px; 
+            padding-right:10px; 
+            padding-top:10px;*/ 
+        } 
+        #selectionSet td { 
+            border-color: black; 
+            border-style: solid; 
+            border-width: 2px; 
+            margin-bottom:10px; 
+            margin-left:10px; 
+            margin-right:10px; 
+            margin-top:10px; 
+            padding-bottom:10px; 
+            padding-left:10px; 
+            padding-right:10px; 
+            padding-top:10px; 
+        } 
+        #messageWindow img { 
+            height:80%; 
+        } 
+        .messageWindowHolder { 
+            height:100%; 
+            float:left; 
+        } 
+        .representation { 
+            height:100%; 
+        } 
+        div { 
+            text-align: center; 
+        } 
+        .more { 
+            background-color:#CC66FF; 
+            color:White; 
+        } 
+        .black { 
+            background-color:black; 
+            color:#adff2f; 
+        } 
+        .speak { 
+            background-image:url('images/msp-25.png'); 
+            background-repeat:no-repeat; 
+            background-position:right bottom; 
+            background-color:#CCCCFF; 
+        } 
+        ]]></css>
+    <image>image.jpg</image>
+    <created_by>2</created_by> 
+    <created_date>2012-09-10 12:06:48</created_date>
+    <modified_date>2012-09-24 09:18:34</modified_date>
+</theme>

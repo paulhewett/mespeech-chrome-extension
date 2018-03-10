@@ -1,0 +1,135 @@
+﻿#footer{
+	position: absolute;
+	bottom: 0px;
+	left: 0px; 
+	width:100%;
+	background:black;
+	} 
+#logo
+{
+    padding-top:5px;
+    padding-bottom:5px;
+}
+#left {
+	float:left;
+	padding-left:20px;
+
+}
+#right{
+	background:black;
+	text-align:right;
+	padding-right:5px;
+	padding-top:10px;
+}
+#loading{
+	padding-top:150px;
+	height:87px;
+	text-align:center;
+}
+#loading div{
+	padding-top:30px;
+}  
+body
+{
+    margin: 0 0 0 0;
+    font-family:Segoe UI, Helvetica, sans-serif;
+	font-size:small;
+	color:#adff2f;
+    background-color:Gray;
+}
+
+a:visited{
+	color:#adff2f;
+}
+a{
+	color:#adff2f;
+}
+#splash
+{
+    border-radius:5px;
+    box-shadow: 10px 10px 5px #505050;
+    background-image:url('../images/splash.jpg');
+    background-position:center;
+	background-repeat:no-repeat;
+    border:1px solid black;
+    height:330px;
+    position:absolute;
+    top:50%;
+    margin-top:-165px;
+    left:50%;
+    width:500px;
+    margin-left:-250px;
+}
+#content{
+    width: 300px;
+    margin-left: 100px;
+}
+#signin
+{
+    text-align: center;
+    background-color:black;
+    border-radius:5px;
+    box-shadow: 10px 10px 5px #505050;
+    background-position:center;
+	background-repeat:no-repeat;
+    border:1px solid black;
+    height:330px;
+    position:absolute;
+    top:50%;
+    margin-top:-165px;
+    left:50%;
+    width:500px;
+    margin-left:-250px;
+}
+#signin input{
+    color: Gray;
+    width: 250px;
+    margin-bottom: 20px;
+    padding:4px 4px 4px 4px;
+    font-family:Trebuchet MS;
+}
+#signin button{
+    width: 263px;
+    margin-bottom: 20px;
+    padding:4px 4px 4px 4px;
+    font-family:Trebuchet MS;
+}
+#signin img{
+    padding-top: 20px;
+    float: none;
+}
+
+#loading img
+{
+    position:absolute;
+    margin-left:-12px;
+    left:50%;
+}
+    
+#help{
+	float:right;
+	position: absolute;
+	right:0px;
+}  
+#showOptions
+{
+
+}  
+#options
+{
+    float:left;
+    padding-left:10px;
+}
+#help img
+{
+ float:right;
+ padding-right: 10px;   
+}
+#left img
+{
+    float:left;
+}
+#right div
+{
+    padding-bottom:5px;
+}

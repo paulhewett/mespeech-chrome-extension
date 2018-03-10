@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<selectionsets>
+    <selectionset>
+        <id>B</id>
+        <layout_id>B</layout_id>
+        <name>Home</name>
+        <description>This is the home page</description>
+        <created_date>2012-10-23 16:09:07</created_date>
+        <modified_date>2012-10-23 16:31:08</modified_date>
+    </selectionset>
+</selectionsets>

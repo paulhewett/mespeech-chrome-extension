@@ -1,0 +1,263 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<items>
+	<item>
+		<id>3367</id>
+		<selectionset_id>368</selectionset_id>
+		<representation>ms/home_lime.png</representation>
+		<gloss><![CDATA[home]]></gloss>
+		<enable_image>1</enable_image>
+		<priority>0</priority>
+		<force_location>a-1</force_location>
+		<action>loadSelectionSet('C')</action>
+		<action_parameter>NA</action_parameter>
+		<concept_code>NA</concept_code>
+		<style/>
+		<location>Any</location>
+		<start_time>0000-00-00 00:00:00</start_time>
+		<end_time>0000-00-00 00:00:00</end_time>
+		<start_date>0000-00-00 00:00:00</start_date>
+		<end_date>0000-00-00 00:00:00</end_date>
+		<created_date>2013-04-04 16:55:15</created_date>
+		<modified_date>2013-04-04 16:55:15</modified_date>
+	</item>
+	<item>
+		<id>3337</id>
+		<selectionset_id>368</selectionset_id>
+		<representation>ms/clear_lime.png</representation>
+		<gloss><![CDATA[clear]]></gloss>
+		<enable_image>1</enable_image>
+		<priority>0</priority>
+		<force_location>a-4</force_location>
+		<action>clearMessageWindow(clear)</action>
+		<action_parameter>NA</action_parameter>
+		<concept_code>NA</concept_code>
+		<style/>
+		<location>Any</location>
+		<start_time>0000-00-00 00:00:00</start_time>
+		<end_time>0000-00-00 00:00:00</end_time>
+		<start_date>0000-00-00 00:00:00</start_date>
+		<end_date>0000-00-00 00:00:00</end_date>
+		<created_date>2013-04-04 16:44:03</created_date>
+		<modified_date>2013-04-04 16:44:03</modified_date>
+	</item>
+	<item>
+		<id>3338</id>
+		<selectionset_id>368</selectionset_id>
+		<representation>ms/bubble_lime.png</representation>
+		<gloss><![CDATA[speak]]></gloss>
+		<enable_image>1</enable_image>
+		<priority>0</priority>
+		<force_location>a-5</force_location>
+		<action>speakMessageWindow(speak)</action>
+		<action_parameter>NA</action_parameter>
+		<concept_code>NA</concept_code>
+		<style/>
+		<location>Any</location>
+		<start_time>0000-00-00 00:00:00</start_time>
+		<end_time>0000-00-00 00:00:00</end_time>
+		<start_date>0000-00-00 00:00:00</start_date>
+		<end_date>0000-00-00 00:00:00</end_date>
+		<created_date>2013-04-04 16:44:13</created_date>
+		<modified_date>2013-04-04 16:44:13</modified_date>
+	</item>
+	<item>
+		<id>3339</id>
+		<selectionset_id>368</selectionset_id>
+		<representation>ss/family_mother.png</representation>
+		<gloss><![CDATA[mum]]></gloss>
+		<enable_image>1</enable_image>
+		<priority>0</priority>
+		<force_location>b-1</force_location>
+		<action>addToMessageWindow('ss/family_mother.png','mum',1)</action>
+		<action_parameter>NA</action_parameter>
+		<concept_code>NA</concept_code>
+		<style/>
+		<location>Any</location>
+		<start_time>0000-00-00 00:00:00</start_time>
+		<end_time>0000-00-00 00:00:00</end_time>
+		<start_date>0000-00-00 00:00:00</start_date>
+		<end_date>0000-00-00 00:00:00</end_date>
+		<created_date>2013-04-04 16:44:34</created_date>
+		<modified_date>2013-04-04 16:44:34</modified_date>
+	</item>
+	<item>
+		<id>3340</id>
+		<selectionset_id>368</selectionset_id>
+		<representation>ss/family_father.png</representation>
+		<gloss><![CDATA[dad]]></gloss>
+		<enable_image>1</enable_image>
+		<priority>0</priority>
+		<force_location>b-2</force_location>
+		<action>addToMessageWindow('ss/family_father.png','dad',1)</action>
+		<action_parameter>NA</action_parameter>
+		<concept_code>NA</concept_code>
+		<style/>
+		<location>Any</location>
+		<start_time>0000-00-00 00:00:00</start_time>
+		<end_time>0000-00-00 00:00:00</end_time>
+		<start_date>0000-00-00 00:00:00</start_date>
+		<end_date>0000-00-00 00:00:00</end_date>
+		<created_date>2013-04-04 16:44:51</created_date>
+		<modified_date>2013-04-04 16:44:51</modified_date>
+	</item>
+	<item>
+		<id>3341</id>
+		<selectionset_id>368</selectionset_id>
+		<representation>ss/teacher_1.png</representation>
+		<gloss><![CDATA[teacher]]></gloss>
+		<enable_image>1</enable_image>
+		<priority>0</priority>
+		<force_location>c-3</force_location>
+		<action>addToMessageWindow('ss/teacher_1.png','teacher',1)</action>
+		<action_parameter>NA</action_parameter>
+		<concept_code>NA</concept_code>
+		<style/>
+		<location>Any</location>
+		<start_time>0000-00-00 00:00:00</start_time>
+		<end_time>0000-00-00 00:00:00</end_time>
+		<start_date>0000-00-00 00:00:00</start_date>
+		<end_date>0000-00-00 00:00:00</end_date>
+		<created_date>2013-04-04 16:45:01</created_date>
+		<modified_date>2013-04-04 16:45:01</modified_date>
+	</item>
+	<item>
+		<id>3342</id>
+		<selectionset_id>368</selectionset_id>
+		<representation>ss/family_brother.png</representation>
+		<gloss><![CDATA[my brother]]></gloss>
+		<enable_image>1</enable_image>
+		<priority>0</priority>
+		<force_location>c-2</force_location>
+		<action>addToMessageWindow('ss/family_brother.png','my brother',1)</action>
+		<action_parameter>NA</action_parameter>
+		<concept_code>NA</concept_code>
+		<style/>
+		<location>Any</location>
+		<start_time>0000-00-00 00:00:00</start_time>
+		<end_time>0000-00-00 00:00:00</end_time>
+		<start_date>0000-00-00 00:00:00</start_date>
+		<end_date>0000-00-00 00:00:00</end_date>
+		<created_date>2013-04-04 16:45:21</created_date>
+		<modified_date>2013-04-04 16:45:21</modified_date>
+	</item>
+	<item>
+		<id>3343</id>
+		<selectionset_id>368</selectionset_id>
+		<representation>ss/grandmother_1.png</representation>
+		<gloss><![CDATA[grandma]]></gloss>
+		<enable_image>1</enable_image>
+		<priority>0</priority>
+		<force_location>b-3</force_location>
+		<action>addToMessageWindow('ss/grandmother_1.png','grandma',1)</action>
+		<action_parameter>NA</action_parameter>
+		<concept_code>NA</concept_code>
+		<style/>
+		<location>Any</location>
+		<start_time>0000-00-00 00:00:00</start_time>
+		<end_time>0000-00-00 00:00:00</end_time>
+		<start_date>0000-00-00 00:00:00</start_date>
+		<end_date>0000-00-00 00:00:00</end_date>
+		<created_date>2013-04-04 16:45:51</created_date>
+		<modified_date>2013-04-04 16:45:51</modified_date>
+	</item>
+	<item>
+		<id>3344</id>
+		<selectionset_id>368</selectionset_id>
+		<representation>ss/grandfather_1.png</representation>
+		<gloss><![CDATA[grandpa]]></gloss>
+		<enable_image>1</enable_image>
+		<priority>0</priority>
+		<force_location>b-4</force_location>
+		<action>addToMessageWindow('ss/grandfather_1.png','grandpa',1)</action>
+		<action_parameter>NA</action_parameter>
+		<concept_code>NA</concept_code>
+		<style/>
+		<location>Any</location>
+		<start_time>0000-00-00 00:00:00</start_time>
+		<end_time>0000-00-00 00:00:00</end_time>
+		<start_date>0000-00-00 00:00:00</start_date>
+		<end_date>0000-00-00 00:00:00</end_date>
+		<created_date>2013-04-04 16:45:58</created_date>
+		<modified_date>2013-04-04 16:45:58</modified_date>
+	</item>
+	<item>
+		<id>3345</id>
+		<selectionset_id>368</selectionset_id>
+		<representation>ss/yes.png</representation>
+		<gloss><![CDATA[yes]]></gloss>
+		<enable_image>1</enable_image>
+		<priority>0</priority>
+		<force_location>b-5</force_location>
+		<action>speakMessage('yes')</action>
+		<action_parameter>NA</action_parameter>
+		<concept_code>NA</concept_code>
+		<style>speak</style>
+		<location>Any</location>
+		<start_time>0000-00-00 00:00:00</start_time>
+		<end_time>0000-00-00 00:00:00</end_time>
+		<start_date>0000-00-00 00:00:00</start_date>
+		<end_date>0000-00-00 00:00:00</end_date>
+		<created_date>2013-04-04 16:46:28</created_date>
+		<modified_date>2013-04-04 16:46:28</modified_date>
+	</item>
+	<item>
+		<id>3346</id>
+		<selectionset_id>368</selectionset_id>
+		<representation>ss/no_1.png</representation>
+		<gloss><![CDATA[no]]></gloss>
+		<enable_image>1</enable_image>
+		<priority>0</priority>
+		<force_location>c-5</force_location>
+		<action>speakMessage('no')</action>
+		<action_parameter>NA</action_parameter>
+		<concept_code>NA</concept_code>
+		<style>speak</style>
+		<location>Any</location>
+		<start_time>0000-00-00 00:00:00</start_time>
+		<end_time>0000-00-00 00:00:00</end_time>
+		<start_date>0000-00-00 00:00:00</start_date>
+		<end_date>0000-00-00 00:00:00</end_date>
+		<created_date>2013-04-04 16:46:41</created_date>
+		<modified_date>2013-04-04 16:46:41</modified_date>
+	</item>
+	<item>
+		<id>3347</id>
+		<selectionset_id>368</selectionset_id>
+		<representation>ss/family_sister.png</representation>
+		<gloss><![CDATA[my sister]]></gloss>
+		<enable_image>1</enable_image>
+		<priority>0</priority>
+		<force_location>c-1</force_location>
+		<action>addToMessageWindow('ss/family_sister.png','my sister',1)</action>
+		<action_parameter>NA</action_parameter>
+		<concept_code>NA</concept_code>
+		<style/>
+		<location>Any</location>
+		<start_time>0000-00-00 00:00:00</start_time>
+		<end_time>0000-00-00 00:00:00</end_time>
+		<start_date>0000-00-00 00:00:00</start_date>
+		<end_date>0000-00-00 00:00:00</end_date>
+		<created_date>2013-04-04 16:46:57</created_date>
+		<modified_date>2013-04-04 16:46:57</modified_date>
+	</item>
+	<item>
+		<id>3348</id>
+		<selectionset_id>368</selectionset_id>
+		<representation>ss/friend.png</representation>
+		<gloss><![CDATA[my friend]]></gloss>
+		<enable_image>1</enable_image>
+		<priority>0</priority>
+		<force_location>c-4</force_location>
+		<action>addToMessageWindow('ss/friend.png','my friend',1)</action>
+		<action_parameter>NA</action_parameter>
+		<concept_code>NA</concept_code>
+		<style/>
+		<location>Any</location>
+		<start_time>0000-00-00 00:00:00</start_time>
+		<end_time>0000-00-00 00:00:00</end_time>
+		<start_date>0000-00-00 00:00:00</start_date>
+		<end_date>0000-00-00 00:00:00</end_date>
+		<created_date>2013-04-04 16:47:12</created_date>
+		<modified_date>2013-04-04 16:47:12</modified_date>
+	</item>
+</items>

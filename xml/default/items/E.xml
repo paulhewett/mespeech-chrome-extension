@@ -1,0 +1,283 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<items>
+	<item>
+		<id>3349</id>
+		<selectionset_id>369</selectionset_id>
+		<representation>ss/friend.png</representation>
+		<gloss><![CDATA[home]]></gloss>
+		<enable_image>1</enable_image>
+		<priority>0</priority>
+		<force_location>a-1</force_location>
+		<action>loadSelectionSet('C')</action>
+		<action_parameter>NA</action_parameter>
+		<concept_code>NA</concept_code>
+		<style/>
+		<location>Any</location>
+		<start_time>0000-00-00 00:00:00</start_time>
+		<end_time>0000-00-00 00:00:00</end_time>
+		<start_date>0000-00-00 00:00:00</start_date>
+		<end_date>0000-00-00 00:00:00</end_date>
+		<created_date>2013-04-04 16:47:31</created_date>
+		<modified_date>2013-04-04 16:47:31</modified_date>
+	</item>
+	<item>
+		<id>3350</id>
+		<selectionset_id>369</selectionset_id>
+		<representation>ms/home_lime.png</representation>
+		<gloss><![CDATA[home]]></gloss>
+		<enable_image>1</enable_image>
+		<priority>0</priority>
+		<force_location>a-1</force_location>
+		<action>loadSelectionSet('C')</action>
+		<action_parameter>NA</action_parameter>
+		<concept_code>NA</concept_code>
+		<style/>
+		<location>Any</location>
+		<start_time>0000-00-00 00:00:00</start_time>
+		<end_time>0000-00-00 00:00:00</end_time>
+		<start_date>0000-00-00 00:00:00</start_date>
+		<end_date>0000-00-00 00:00:00</end_date>
+		<created_date>2013-04-04 16:47:38</created_date>
+		<modified_date>2013-04-04 16:47:38</modified_date>
+	</item>
+	<item>
+		<id>3351</id>
+		<selectionset_id>369</selectionset_id>
+		<representation>ms/clear_lime.png</representation>
+		<gloss><![CDATA[clear]]></gloss>
+		<enable_image>1</enable_image>
+		<priority>0</priority>
+		<force_location>a-4</force_location>
+		<action>clearMessageWindow(clear)</action>
+		<action_parameter>NA</action_parameter>
+		<concept_code>NA</concept_code>
+		<style/>
+		<location>Any</location>
+		<start_time>0000-00-00 00:00:00</start_time>
+		<end_time>0000-00-00 00:00:00</end_time>
+		<start_date>0000-00-00 00:00:00</start_date>
+		<end_date>0000-00-00 00:00:00</end_date>
+		<created_date>2013-04-04 16:47:48</created_date>
+		<modified_date>2013-04-04 16:47:48</modified_date>
+	</item>
+	<item>
+		<id>3352</id>
+		<selectionset_id>369</selectionset_id>
+		<representation>ms/bubble_lime.png</representation>
+		<gloss><![CDATA[speak]]></gloss>
+		<enable_image>1</enable_image>
+		<priority>0</priority>
+		<force_location>a-5</force_location>
+		<action>speakMessageWindow(speak)</action>
+		<action_parameter>NA</action_parameter>
+		<concept_code>NA</concept_code>
+		<style/>
+		<location>Any</location>
+		<start_time>0000-00-00 00:00:00</start_time>
+		<end_time>0000-00-00 00:00:00</end_time>
+		<start_date>0000-00-00 00:00:00</start_date>
+		<end_date>0000-00-00 00:00:00</end_date>
+		<created_date>2013-04-04 16:47:58</created_date>
+		<modified_date>2013-04-04 16:47:58</modified_date>
+	</item>
+	<item>
+		<id>3353</id>
+		<selectionset_id>369</selectionset_id>
+		<representation>ss/home.png</representation>
+		<gloss><![CDATA[home]]></gloss>
+		<enable_image>1</enable_image>
+		<priority>0</priority>
+		<force_location>b-1</force_location>
+		<action>addToMessageWindow('ss/home.png','home',1)</action>
+		<action_parameter>NA</action_parameter>
+		<concept_code>NA</concept_code>
+		<style/>
+		<location>Any</location>
+		<start_time>0000-00-00 00:00:00</start_time>
+		<end_time>0000-00-00 00:00:00</end_time>
+		<start_date>0000-00-00 00:00:00</start_date>
+		<end_date>0000-00-00 00:00:00</end_date>
+		<created_date>2013-04-04 16:48:14</created_date>
+		<modified_date>2013-04-04 16:48:14</modified_date>
+	</item>
+	<item>
+		<id>3354</id>
+		<selectionset_id>369</selectionset_id>
+		<representation>ss/school.png</representation>
+		<gloss><![CDATA[school]]></gloss>
+		<enable_image>1</enable_image>
+		<priority>0</priority>
+		<force_location>c-1</force_location>
+		<action>addToMessageWindow('ss/school.png','school',1)</action>
+		<action_parameter>NA</action_parameter>
+		<concept_code>NA</concept_code>
+		<style/>
+		<location>Any</location>
+		<start_time>0000-00-00 00:00:00</start_time>
+		<end_time>0000-00-00 00:00:00</end_time>
+		<start_date>0000-00-00 00:00:00</start_date>
+		<end_date>0000-00-00 00:00:00</end_date>
+		<created_date>2013-04-04 16:48:24</created_date>
+		<modified_date>2013-04-04 16:48:24</modified_date>
+	</item>
+	<item>
+		<id>3355</id>
+		<selectionset_id>369</selectionset_id>
+		<representation>ss/stores.png</representation>
+		<gloss><![CDATA[shops]]></gloss>
+		<enable_image>1</enable_image>
+		<priority>0</priority>
+		<force_location>b-2</force_location>
+		<action>addToMessageWindow('ss/stores.png','shops',1)</action>
+		<action_parameter>NA</action_parameter>
+		<concept_code>NA</concept_code>
+		<style/>
+		<location>Any</location>
+		<start_time>0000-00-00 00:00:00</start_time>
+		<end_time>0000-00-00 00:00:00</end_time>
+		<start_date>0000-00-00 00:00:00</start_date>
+		<end_date>0000-00-00 00:00:00</end_date>
+		<created_date>2013-04-04 16:48:43</created_date>
+		<modified_date>2013-04-04 16:48:43</modified_date>
+	</item>
+	<item>
+		<id>3356</id>
+		<selectionset_id>369</selectionset_id>
+		<representation>ss/playground.png</representation>
+		<gloss><![CDATA[playground]]></gloss>
+		<enable_image>1</enable_image>
+		<priority>0</priority>
+		<force_location>c-2</force_location>
+		<action>addToMessageWindow('ss/playground.png','playground',1)</action>
+		<action_parameter>NA</action_parameter>
+		<concept_code>NA</concept_code>
+		<style/>
+		<location>Any</location>
+		<start_time>0000-00-00 00:00:00</start_time>
+		<end_time>0000-00-00 00:00:00</end_time>
+		<start_date>0000-00-00 00:00:00</start_date>
+		<end_date>0000-00-00 00:00:00</end_date>
+		<created_date>2013-04-04 16:48:55</created_date>
+		<modified_date>2013-04-04 16:48:55</modified_date>
+	</item>
+	<item>
+		<id>3357</id>
+		<selectionset_id>369</selectionset_id>
+		<representation>ss/toilet.png</representation>
+		<gloss><![CDATA[toilet]]></gloss>
+		<enable_image>1</enable_image>
+		<priority>0</priority>
+		<force_location>b-3</force_location>
+		<action>addToMessageWindow('ss/toilet.png','toilet',1)</action>
+		<action_parameter>NA</action_parameter>
+		<concept_code>NA</concept_code>
+		<style/>
+		<location>Any</location>
+		<start_time>0000-00-00 00:00:00</start_time>
+		<end_time>0000-00-00 00:00:00</end_time>
+		<start_date>0000-00-00 00:00:00</start_date>
+		<end_date>0000-00-00 00:00:00</end_date>
+		<created_date>2013-04-04 16:49:05</created_date>
+		<modified_date>2013-04-04 16:49:05</modified_date>
+	</item>
+	<item>
+		<id>3358</id>
+		<selectionset_id>369</selectionset_id>
+		<representation>ms/mcd_logo.png</representation>
+		<gloss><![CDATA[mcdonalds]]></gloss>
+		<enable_image>1</enable_image>
+		<priority>0</priority>
+		<force_location>c-3</force_location>
+		<action>addToMessageWindow('ms/mcd_logo.png','mcdonalds',1)</action>
+		<action_parameter>NA</action_parameter>
+		<concept_code>NA</concept_code>
+		<style/>
+		<location>Any</location>
+		<start_time>0000-00-00 00:00:00</start_time>
+		<end_time>0000-00-00 00:00:00</end_time>
+		<start_date>0000-00-00 00:00:00</start_date>
+		<end_date>0000-00-00 00:00:00</end_date>
+		<created_date>2013-04-04 16:49:16</created_date>
+		<modified_date>2013-04-04 16:49:16</modified_date>
+	</item>
+	<item>
+		<id>3359</id>
+		<selectionset_id>369</selectionset_id>
+		<representation>ss/outside_1.png</representation>
+		<gloss><![CDATA[outside]]></gloss>
+		<enable_image>1</enable_image>
+		<priority>0</priority>
+		<force_location>b-4</force_location>
+		<action>addToMessageWindow('ss/outside_1.png','outside',1)</action>
+		<action_parameter>NA</action_parameter>
+		<concept_code>NA</concept_code>
+		<style/>
+		<location>Any</location>
+		<start_time>0000-00-00 00:00:00</start_time>
+		<end_time>0000-00-00 00:00:00</end_time>
+		<start_date>0000-00-00 00:00:00</start_date>
+		<end_date>0000-00-00 00:00:00</end_date>
+		<created_date>2013-04-04 16:49:45</created_date>
+		<modified_date>2013-04-04 16:49:45</modified_date>
+	</item>
+	<item>
+		<id>3360</id>
+		<selectionset_id>369</selectionset_id>
+		<representation>ss/grandmother_1.png</representation>
+		<gloss><![CDATA[grandma's house]]></gloss>
+		<enable_image>1</enable_image>
+		<priority>0</priority>
+		<force_location>c-4</force_location>
+		<action>addToMessageWindow('ss/grandmother_1.png','grandma's house',1)</action>
+		<action_parameter>NA</action_parameter>
+		<concept_code>NA</concept_code>
+		<style/>
+		<location>Any</location>
+		<start_time>0000-00-00 00:00:00</start_time>
+		<end_time>0000-00-00 00:00:00</end_time>
+		<start_date>0000-00-00 00:00:00</start_date>
+		<end_date>0000-00-00 00:00:00</end_date>
+		<created_date>2013-04-04 16:50:08</created_date>
+		<modified_date>2013-04-04 16:50:08</modified_date>
+	</item>
+	<item>
+		<id>3361</id>
+		<selectionset_id>369</selectionset_id>
+		<representation>ss/yes.png</representation>
+		<gloss><![CDATA[yes]]></gloss>
+		<enable_image>1</enable_image>
+		<priority>0</priority>
+		<force_location>b-5</force_location>
+		<action>speakMessage('yes')</action>
+		<action_parameter>NA</action_parameter>
+		<concept_code>NA</concept_code>
+		<style>speak</style>
+		<location>Any</location>
+		<start_time>0000-00-00 00:00:00</start_time>
+		<end_time>0000-00-00 00:00:00</end_time>
+		<start_date>0000-00-00 00:00:00</start_date>
+		<end_date>0000-00-00 00:00:00</end_date>
+		<created_date>2013-04-04 16:50:16</created_date>
+		<modified_date>2013-04-04 16:50:16</modified_date>
+	</item>
+	<item>
+		<id>3363</id>
+		<selectionset_id>369</selectionset_id>
+		<representation>ss/no_1.png</representation>
+		<gloss><![CDATA[no]]></gloss>
+		<enable_image>1</enable_image>
+		<priority>0</priority>
+		<force_location>c-5</force_location>
+		<action>speakMessage('no')</action>
+		<action_parameter>NA</action_parameter>
+		<concept_code>NA</concept_code>
+		<style>speak</style>
+		<location>Any</location>
+		<start_time>0000-00-00 00:00:00</start_time>
+		<end_time>0000-00-00 00:00:00</end_time>
+		<start_date>0000-00-00 00:00:00</start_date>
+		<end_date>0000-00-00 00:00:00</end_date>
+		<created_date>2013-04-04 16:50:40</created_date>
+		<modified_date>2013-04-04 16:50:40</modified_date>
+	</item>
+</items>

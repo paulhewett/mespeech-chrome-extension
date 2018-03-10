@@ -1,0 +1,23 @@
+{
+    "manifest_version": 2,
+    "app": {
+        "launch": {
+            "local_path": "pages/index/index.html"
+        }
+    },
+    "description": "mespeech Chrome Extension that provides text-to-speech output.",
+    "icons": {
+        "16": "images/msp-16.png",
+        "128": "images/msp-128.png",
+        "256": "images/msp-256.png"
+    },
+    "minimum_chrome_version": "14",
+    "name": "mespeech",
+    "permissions": [ 
+        "tts",
+        "unlimitedStorage",
+        "storage",
+        "https://mespee.ch/"
+    ],
+    "version": "1.0.7.2"
+}
