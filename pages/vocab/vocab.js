@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
 
-
+    //console.log("Starting to run this");
 
     //alert(localStorage["msp_location_enabled"]);
 

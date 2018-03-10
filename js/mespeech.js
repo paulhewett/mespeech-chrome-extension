@@ -94,7 +94,8 @@ function addToMessageWindow(image,gloss,displayImage){
             if(!image==""){
 
                 //Build the sql
-                var sql = 'SELECT * FROM images WHERE path = "' + symbolRoot + image + '"';
+                //var sql = 'SELECT * FROM images WHERE path = "' + symbolRoot + image + '"';
+                var sql = 'SELECT * FROM images WHERE path = "' + image + '"';
 
                 db.transaction(function(tx) {
 
@@ -577,22 +578,22 @@ function checkAtLocation(lat, lon){
 
 function checkLocation(){
     
-    console.log("Checking location...");
+    //console.log("Checking location...");
 
     if (navigator.geolocation){
             
         navigator.geolocation.getCurrentPosition(function(position){
 
-            console.log("Setting position alt...");
+            //console.log("Setting position alt...");
 
             currentLatitude = position.coords.latitude;
             currentLongitude = position.coords.longitude;
-            console.log("Current latitude: " + currentLatitude);
-            console.log("Current longitude: " + currentLongitude);            
+            //console.log("Current latitude: " + currentLatitude);
+            //console.log("Current longitude: " + currentLongitude);            
         });
 
     } else {
-        console.log("Unable to find location");
+        //console.log("Unable to find location");
         currentLatitude = null;
         currentLongitude = null;
     }
@@ -602,6 +603,8 @@ function checkLocation(){
 function loadSelectionSet(gridurl) {
 
     gridurl = "items/?selectionset_id=" + gridurl;
+
+    //console.log("Loading selection set with " + gridurl);
 
     //alert("SS to load: " + gridurl);
 
@@ -648,7 +651,7 @@ function loadSelectionSet(gridurl) {
         }
 
         //Determine whether to display based on current location
-        if ($(this).find('location').text() != "Any"){
+        if ($(this).find('location').text() != "all"){
 
             //Check if the item should be displayed
             var l = $(this).find('location').text().split(",");
@@ -660,23 +663,33 @@ function loadSelectionSet(gridurl) {
                 if (checkAtLocation(itemLat, itemLon)==true){
                     //We're in the location, so display
                     itemWithinLocation = true;
+                    //console.log("Item in location");
                 } else {
                     //We're not in the location, so do not display
                     itemWithinLocation = false;
+                    //console.log("Item not in location");
                 }
 
             } else {
                 //Don't display it, even though location set as user chosen not to use location in app
                 itemWithinLocation = false;
+                //console.log("Item not in location");
             }
         } else {
             //Display the item if location set to 'Everything'
             itemWithinLocation = true;
+            //console.log("Item within location")
         }
+
+        //console.log("Current cell is " + currentCell);
+
+        //console.log("FINAL CHECK in location: " + itemWithinLocation + ", time: " + itemWithinTime);
 
         //If has location and is within time and date limits, check it exists in DOM, otherwise ignore it
         if (document.getElementById(currentCell) && itemWithinLocation == true && itemWithinTime == true){
         //if (document.getElementById(currentCell)){
+             
+            //console.log("GEtting gloss"); 
                     
             //Set up the cell. It must have gloss, but may not have an image
             if($(this).find('gloss')) {
@@ -698,6 +711,7 @@ function loadSelectionSet(gridurl) {
                 } else {
                 
                     //Use images stored in db
+                    //console.log("Want to set image");
                     setImage($(this).find('representation').text(), currentCell);
                     
                 }
@@ -1062,29 +1076,97 @@ function scanSelectStage(){
 
 function setImage(url,grid){
     
+    imageUrl = symbolRoot + url
+    //var m = l[1].replace(")", "");
+    imageUrl = imageUrl.replace("/images/symbols/250/","");
+
+    //Action dropbox files - update this
+     imageUrl = imageUrl.replace ("https://mespee.chhttps:", "https:");
+
+     imageUrl = imageUrl.replace ("/150/", "/250/");
+
     //Build the sql
-    var sql = 'SELECT * FROM images WHERE path = "' + symbolRoot + url + '"';
+    var sql = 'SELECT * FROM images WHERE path = "' + imageUrl + '"';
     var currentImage;
 
-    db.transaction(function(tx) {
 
-        //Perform the query
-        tx.executeSql(sql, [], function(tx, results) {
 
-            if(results.rows.length>0){
-                //If rows returned, it image found, use it
-                currentImage = "<img class=\"representation\" src=\"" + results.rows.item(0).image_blob + "\" />";
 
-            }else{
-                //If not, say so
-                currentImage = "";
 
+    //Decide whether to display the image
+    //Do a check to see if image is licensed
+            //console.log("Preferred symbolset is " + localStorage["msp_preferredSs"])
+            
+            //var str = "Hello world, welcome to the universe.";
+            
+
+            var showImage;
+
+            //console.log("n is " + n);
+
+            //Check if dropbox image
+            if (imageUrl.indexOf("dropboxusercontent") >= 0){
+                console.log(imageUrl + " is a dropboxfile - show it");
+                showImage = true;
+            } else {
+
+                var n = imageUrl.indexOf("/ss/") + imageUrl.indexOf("/wi/") + imageUrl.indexOf("/me/");
+
+                //It's a licensed symbol set, check if it's licensed
+                if (n >= 0){
+                
+                    //Using a symbol set that requires a license
+
+                    //Check if user's preferred symbols set in url, show it
+                    //String to test
+                    var k = "/" + localStorage["msp_preferredSs"] + "/";
+
+                    if (imageUrl.indexOf(k) < 0){
+                    
+                        //Symbol not licensed.
+                        //console.log("Symbol not licensed, dont show it");
+                        showImage = false;
+
+                    } else {
+                    
+                        //console.log("Symbol licensed, show it");
+                        showImage = true;
+
+                    }                    
+                } else {
+
+                    //Symbol does not require a license
+                    console.log(imageUrl + " does not need license - show it");
+                    showImage = true;
+                }
             }
-            //Display the image
-            var cell = "#" + grid;
-            $(cell).prepend(currentImage);
+
+
+    if (showImage == true){
+        db.transaction(function(tx) {
+
+            //Perform the query
+            tx.executeSql(sql, [], function(tx, results) {
+
+                if(results.rows.length>0){
+                    //If rows returned, it image found, use it
+                    currentImage = "<img class=\"representation\" src=\"" + results.rows.item(0).image_blob + "\" />";
+
+                }else{
+                    //If not, say so
+                    currentImage = "";
+
+                }
+                //Display the image
+                var cell = "#" + grid;
+            
+                $(cell).prepend(currentImage);
+            
+            });
+
         });
-    });
+
+    }
 
 }
 
@@ -1266,7 +1348,7 @@ function setFlexibleGrid() {
 }
 
 function setPage() {
-    
+    //console.log("Setting page");
     setTemplate();
   
 }

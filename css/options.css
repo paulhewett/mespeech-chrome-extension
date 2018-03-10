@@ -4,6 +4,14 @@
     background: Black;
     color: White;
 }
+
+a:visited{
+	color:#adff2f;
+}
+a{
+	color:#adff2f;
+}
+
 h2
 {
     color:#adff2f;

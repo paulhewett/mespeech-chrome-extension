@@ -42,12 +42,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     //Set buttons
     if (localStorage["msp_token"] && localStorage["msp_userid"]) {
-        $("#sign-in").show();
+        $("#sign-in").hide();
         $("#sign-out").show();
         $("#sync").show();
     } else {
         $("#sign-in").show();
-        $("#sign-out").show();
+        $("#sign-out").hide();
         $("#sync").hide();
     }
     
@@ -142,7 +142,6 @@ document.addEventListener('DOMContentLoaded', function () {
     //Set Event Listeners
 
     //Vocabulary Options
-    document.getElementById('test').addEventListener('click', runTest);
     document.getElementById('userVocabs').addEventListener('change', getVocabDescription);
     document.getElementById('open').addEventListener('click', openVocab);
     document.getElementById('save').addEventListener('click', save_options);
@@ -204,39 +203,6 @@ document.addEventListener('DOMContentLoaded', function () {
     //});
 });
 
-
-function runTest(){
-    
-    console.log("Running test");
-
-
-    $.ajax({
-
-        //crossDomain: true,
-        beforeSend: function (xhr) {
-            xhr.setRequestHeader("apikey", "asdqwe123");
-        },
-        async: false,
-        type: "GET",
-        headers: {
-            'apikey': 'asdqwe123',
-            'token': 'cdd1277e6eaee993079d8c3a7ba83377bff4bee3'
-        },
-        url: "http://mespee.ch/api/manageduser",
-        success: function (xml) {
-
-            console.log("Done the test");
-        },
-        error: function (xhr) {
-            xml = xhr.responseXML; // complete XmlHttpRequest object returned
-            console.log("Error doing the test");
-        }
-    });
-
-
-
-
-}
 
 function firstRun() {
     //Set some default values if this is first run.
@@ -366,7 +332,7 @@ function authUser() {
         crossDomain: true,
         async: false,
         headers: {
-            'apikey': 'asdqwe123'
+            'apikey': 'asdqwe123',
         },
         url: 'https://mespee.ch/api/auth/',
         type: 'POST',
@@ -792,6 +758,13 @@ function save_options() {
 
 function saveWebImage(url,stage,stages){
     
+    
+        //Modify to take account of dropbox
+        //Need to improve this.
+     //https://mespee.ch/images/symbols/250https:
+     url = url.replace("https://mespee.ch/images/symbols/250https:", "https:");
+     console.log("URL IS " + url);
+
     //Save the image as a blob in local storage    
     stage = stage + 1;
 
@@ -1026,7 +999,7 @@ function signOut() {
 
     statusMessage("Successfully signed out.", 5000);
     $("#sign-in").show();
-    $("#sign-out").show();
+    $("#sign-out").hide();
     $("#sync").hide();
     
     //alert("About to do first run");
@@ -1109,7 +1082,7 @@ function sync() {
 
 function syncImages(){
 
-    var imgSyncPath = "https://mespee.ch/images/symbols/250/";
+    var imgSyncPath = "https://mespee.ch/images/symbols/250";
     var i = localStorage["imageManifest"].split(";");
     var trimmedPath;
 
@@ -1120,9 +1093,12 @@ function syncImages(){
         str = i[k];
         //Trim full path if it's there - some have, some don't
         trimmedPath = str.replace(imgSyncPath,"");
+        trimmedPath = str.replace("images/symbols/150/","");
+        
+        syncImgPath = imgSyncPath + trimmedPath
         //console.log("Current image " + trimmedPath)        ;
         //if(trimmedPath != "none"){
-            saveWebImage(imgSyncPath + trimmedPath, k+1, i.length-1);
+            saveWebImage(syncImgPath, k+1, i.length-1);
         //}
     }
 }
