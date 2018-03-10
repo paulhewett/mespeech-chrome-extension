@@ -38,19 +38,26 @@ function authUser() {
 
     console.log("About to auth user with " + xmlToSubmit);
 
+    //Check for cors support
+    console.log($.support.cors);
+
     $.ajax({
         cache: false,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("apikey", "asdqwe123");
+        },
+        //contentType: "application/x-www-form-urlencoded",
         //crossDomain: true,
         async: false,
         headers: {
-            'apikey': 'asdqwe123',
+            'apikey': 'asdqwe123'
         },
         url: 'https://mespee.ch/api/auth',
         type: 'POST',
         data: {
             data: xmlToSubmit
         },
-        success: function(xml) {
+        success: function (xml) {
             //Retrieve user token
             var token = $(xml).find('token').text(); // Store token for subsequent requests
             var user = $(xml).find('id').text(); // Store token for subsequent requests
@@ -70,22 +77,22 @@ function authUser() {
             console.log("About to do the test");
             $.ajax({
 
-                //crossDomain: true,
-                async: false,
-                type: "GET",
-                headers: {
-                    'apikey': 'asdqwe123',
-                    'token': localStorage["msp_token"]
-                },
-                url: "http://mespee.ch/api/" + q,
-                success: function (xml) {
+            //crossDomain: true,
+            async: false,
+            type: "GET",
+            headers: {
+            'apikey': 'asdqwe123',
+            'token': localStorage["msp_token"]
+            },
+            url: "http://mespee.ch/api/" + q,
+            success: function (xml) {
 
-                   console.log("Done the test");
-                },
-                error: function (xhr) {
-                    xml = xhr.responseXML; // complete XmlHttpRequest object returned
-                    console.log("Error doing the test");
-                }
+            console.log("Done the test");
+            },
+            error: function (xhr) {
+            xml = xhr.responseXML; // complete XmlHttpRequest object returned
+            console.log("Error doing the test");
+            }
             });
 
             */
@@ -94,10 +101,10 @@ function authUser() {
             redirectPage("/pages/options/options.html");
 
         },
-        error: function(xhr) {
+        error: function (xhr) {
             console.log("There was an error");
             xml = xhr.responseXML;
-            $(xml).find('error').each(function() {
+            $(xml).find('error').each(function () {
                 alert("Your username or password were incorrect, please try again.")
             });
         }

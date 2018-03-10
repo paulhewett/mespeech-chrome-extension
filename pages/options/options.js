@@ -213,6 +213,9 @@ function runTest(){
     $.ajax({
 
         //crossDomain: true,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("apikey", "asdqwe123");
+        },
         async: false,
         type: "GET",
         headers: {
@@ -363,7 +366,7 @@ function authUser() {
         crossDomain: true,
         async: false,
         headers: {
-            'apikey': 'asdqwe123',
+            'apikey': 'asdqwe123'
         },
         url: 'https://mespee.ch/api/auth/',
         type: 'POST',
