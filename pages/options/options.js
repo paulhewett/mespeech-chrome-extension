@@ -142,6 +142,7 @@ document.addEventListener('DOMContentLoaded', function () {
     //Set Event Listeners
 
     //Vocabulary Options
+    document.getElementById('test').addEventListener('click', runTest);
     document.getElementById('userVocabs').addEventListener('change', getVocabDescription);
     document.getElementById('open').addEventListener('click', openVocab);
     document.getElementById('save').addEventListener('click', save_options);
@@ -203,6 +204,36 @@ document.addEventListener('DOMContentLoaded', function () {
     //});
 });
 
+
+function runTest(){
+    
+    console.log("Running test");
+
+
+    $.ajax({
+
+        //crossDomain: true,
+        async: false,
+        type: "GET",
+        headers: {
+            'apikey': 'asdqwe123',
+            'token': 'cdd1277e6eaee993079d8c3a7ba83377bff4bee3'
+        },
+        url: "http://mespee.ch/api/manageduser",
+        success: function (xml) {
+
+            console.log("Done the test");
+        },
+        error: function (xhr) {
+            xml = xhr.responseXML; // complete XmlHttpRequest object returned
+            console.log("Error doing the test");
+        }
+    });
+
+
+
+
+}
 
 function firstRun() {
     //Set some default values if this is first run.

@@ -40,7 +40,7 @@ function authUser() {
 
     $.ajax({
         cache: false,
-        crossDomain: true,
+        //crossDomain: true,
         async: false,
         headers: {
             'apikey': 'asdqwe123',

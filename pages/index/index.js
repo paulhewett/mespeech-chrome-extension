@@ -16,12 +16,13 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('splashStyle').href = css;
     }
 
+
     //Check if this is first run
     if(localStorage["msp_install_date"] == undefined) {
     //if(chrome.local.storage.get('msp_install_date') == undefined) {
         //Set the install date
         var d = new Date();
-        //chrome.storage.local.set({ 'msp_install_date': d.toUTCString() });
+        //chrome.local.storage.set({ 'msp_install_date': d.toUTCString() });
         localStorage["msp_install_date"] = d.toUTCString();
 
         //Go to options page for firstrun
